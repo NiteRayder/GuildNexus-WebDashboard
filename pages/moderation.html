@@ -1,51 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Moderation | NyxEclipse</title>
-  <link rel="stylesheet" href="../style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moderation — NyxEclipse</title>
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-  <div id="cursor-glow"></div>
-  <header>
-    <div class="header-container">
-      <div class="logo">Nyx<span>Eclipse</span></div>
-      <nav>
-        <a href="home.html">Home</a>
-        <a href="moderation.html" class="active">Moderation</a>
-        <a href="automation.html">Automation</a>
-        <a href="settings.html">Settings</a>
-      </nav>
-    </div>
-  </header>
 
-  <main>
-    <section class="fade-in">
-      <h1>Automated Moderation & Logs</h1>
-      <p>Configure rule filters, auto-punishments, and view audit history.</p>
-    </section>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div id="cursor-glow"></div>
 
-    <section class="fade-in">
-      <div class="cards">
-        <div class="card">
-          <h3>Anti-Spam Filter</h3>
-          <p>Active — Rate limiting 5 messages per 3 sec.</p>
+    <header>
+        <div class="header-container">
+            <div class="logo">Nyx<span>Eclipse</span></div>
+            <nav>
+                <a href="Home.html">Home</a>
+                <a href="moderation.html" class="active">Moderation</a>
+                <a href="automation.html">Automation</a>
+                <a href="settings.html">Settings</a>
+            </nav>
         </div>
-        <div class="card">
-          <h3>Link Validation</h3>
-          <p>Active — Restricts unauthorized invite links.</p>
-        </div>
-        <div class="card">
-          <h3>Audit Logs</h3>
-          <p>View full history of mutes, kicks, and bans.</p>
-        </div>
-      </div>
-    </section>
-  </main>
+    </header>
 
-  <footer><p>© 2026 NyxEclipse. All rights reserved.</p></footer>
-  <script src="../assets/js/animations.js"></script>
-  <script src="../assets/js/cursor-glow.js"></script>
+    <main>
+        <section class="hero hero-compact fade-in">
+            <h1>Automated Moderation <span>& Logs</span></h1>
+            <p>Configure rule filters, auto-punishments, and view audit history.</p>
+        </section>
+
+        <section class="fade-in">
+            <div class="cards">
+                <!-- Anti-Spam Filter Card -->
+                <div class="card" id="anti-spam-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <span class="status active" id="spam-status-badge">Active</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="spam-toggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <h3>Anti-Spam Filter</h3>
+                    <p id="spam-desc">Active — Rate limiting 5 messages per 3 sec.</p>
+                    <button class="button btn-small mt-30" id="configure-spam-btn">Configure Filter</button>
+                </div>
+
+                <!-- Link Validation Card -->
+                <div class="card" id="link-val-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <span class="status active" id="link-status-badge">Active</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="link-toggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <h3>Link Validation</h3>
+                    <p id="link-desc">Active — Restricts unauthorized invite links.</p>
+                    <button class="button btn-small mt-30" id="configure-link-btn">Configure Restrictions</button>
+                </div>
+
+                <!-- Audit Logs Card -->
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <span class="status active">Live Sync</span>
+                    </div>
+                    <h3>Audit Logs</h3>
+                    <p>View full history of mutes, kicks, and bans.</p>
+                    <button class="button btn-small mt-30" id="view-logs-btn">View Log Stream</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Audit Log Stream Section -->
+        <section class="fade-in mt-30" id="audit-log-section" style="display: none;">
+            <h2>Recent Audit Log History</h2>
+            <div class="card" style="overflow-x: auto;">
+                <table style="width: 100%; text-align: left; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border-color); color: var(--accent-light);">
+                            <th style="padding: 10px;">Timestamp</th>
+                            <th style="padding: 10px;">Action</th>
+                            <th style="padding: 10px;">User</th>
+                            <th style="padding: 10px;">Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody id="log-table-body">
+                        <!-- Populated by assets/js/moderation.js -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 NyxNexus Development. NyxEclipse Discord Bot.</p>
+    </footer>
+  
+    
+    <script src="assets/js/animations.js"></script>
+    <script src="assets/js/cursor-glow.js"></script>
+    <script src="assets/js/loading.js"></script>
+    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/moderation.js"></script>
 </body>
 </html>
