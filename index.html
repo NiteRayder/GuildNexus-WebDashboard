@@ -3,287 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NyxNexus Development — Dashboard & Documentation</title>
+    <title>NyxNexus Development — Home & Dashboard</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        :root {
-            --bg-color: #0f1117;
-            --card-bg: #161922;
-            --accent-color: #5865f2;
-            --accent-hover: #4752c4;
-            --text-main: #dcddde;
-            --text-muted: #96989d;
-            --border-color: #232733;
-            --heading-color: #ffffff;
-            --sidebar-width: 240px;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            display: flex;
-            min-height: 100vh;
-            flex-direction: column;
-        }
-
-        /* Top Navigation Bar */
-        .navbar {
-            height: 60px;
-            background-color: var(--card-bg);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 24px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .brand-title {
-            color: var(--heading-color);
-            font-size: 1.2rem;
-            font-weight: 700;
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 20px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: color 0.2s ease;
-        }
-
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: var(--heading-color);
-        }
-
-        /* Main Layout */
-        .layout {
-            display: flex;
-            flex: 1;
-        }
-
-        /* Sidebar Navigation */
-        .sidebar {
-            width: var(--sidebar-width);
-            background-color: var(--card-bg);
-            border-right: 1px solid var(--border-color);
-            padding: 24px 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .menu-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .menu-label {
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            padding: 0 8px;
-            margin-bottom: 4px;
-        }
-
-        .sidebar-link {
-            color: var(--text-main);
-            text-decoration: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            transition: background 0.2s ease, color 0.2s ease;
-        }
-
-        .sidebar-link:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-            color: var(--heading-color);
-        }
-
-        .sidebar-link.active {
-            background-color: var(--accent-color);
-            color: #ffffff;
-        }
-
-        /* Main Content Container */
-        .content {
-            flex: 1;
-            padding: 40px;
-            max-width: 1000px;
-        }
-
-        .hero {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 32px;
-            margin-bottom: 32px;
-        }
-
-        .hero h1 {
-            color: var(--heading-color);
-            font-size: 1.8rem;
-            margin-bottom: 12px;
-        }
-
-        .hero p {
-            color: var(--text-muted);
-            margin-bottom: 24px;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: 600;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: background-color 0.2s ease;
-        }
-
-        .btn-primary {
-            background-color: var(--accent-color);
-            color: #ffffff;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--accent-hover);
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-            color: var(--heading-color);
-        }
-
-        /* Footer Routing */
-        footer {
-            background-color: var(--card-bg);
-            border-top: 1px solid var(--border-color);
-            padding: 24px;
-            margin-top: auto;
-            text-align: center;
-        }
-
-        .footer-nav {
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-            list-style: none;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-        }
-
-        .footer-nav a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.85rem;
-        }
-
-        .footer-nav a:hover {
-            color: var(--accent-color);
-        }
-
-        .copyright {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-        }
-    </style>
 </head>
 <body>
 
-    <!-- Top Navigation -->
-    <nav class="navbar">
-        <a href="index.html" class="brand-title">NyxNexus Development</a>
-        <ul class="nav-links">
-            <li><a href="index.html" class="active">Dashboard</a></li>
-            <li><a href="pages/Terms of service.html">Terms & Policy</a></li>
-            <li><a href="pages/contact.html">Contact</a></li>
-        </ul>
-    </nav>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div id="cursor-glow"></div>
 
-    <div class="layout">
-        <!-- Sidebar Router -->
-        <aside class="sidebar">
-            <div class="menu-group">
-                <span class="menu-label">Overview</span>
-                <a href="index.html" class="sidebar-link active">Dashboard Home</a>
-                <a href="pages/Home.html" class="sidebar-link">Home</a>
-                <a href="pages/servers.html" class="sidebar-link">Servers</a>
-                <a href="pages/moderation.html" class="sidebar-link">Moderation</a>
-                <a href="pages/automation.html" class="sidebar-link">Automation</a>
-                <a href="pages/integrations.html" class="sidebar-link">Integrations</a>
-                <a href="pages/AIassistant.html" class="sidebar-link">AI Assistant</a>
-                <a href="pages/analytics.html" class="sidebar-link">Analytics</a>
-                <a href="pages/roadmap.html" class="sidebar-link">Roadmap</a>
-                <a href="pages/invite.html" class="sidebar-link">Invite Bot</a>
+    <header>
+        <div class="header-container">
+            <div class="logo">Nyx<span>Nexus</span></div>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="pages/Home.html">Dashboard</a>
+                <a href="pages/AIassistant.html">AI Assistant</a>
+                <a href="pages/Terms of service.html">Terms & Policy</a>
+                <a href="pages/contact.html">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero fade-in">
+            <h1>NyxNexus <span>Development</span></h1>
+            <p>Empowering Discord communities with next-generation automated tools, AI-powered systems, and seamless management integrations.</p>
+            <div style="margin-top: 30px; display: flex; gap: 15px; justify-content: center;">
+                <a href="pages/invite.html" class="button">Add NyxEclipse</a>
+                <a href="pages/Terms of service.html" class="button" style="background: transparent; border: 1px solid var(--border-color);">View Legal Specs</a>
             </div>
+        </section>
 
-            <div class="menu-group">
-                <span class="menu-label">Account & Legal</span>
-                <a href="pages/settings.html" class="sidebar-link">Settings</a>
-                <a href="pages/about.html" class="sidebar-link">About</a>
-                <a href="pages/Terms of service.html" class="sidebar-link">Terms of Service</a>
-            </div>
-
-            <div class="menu-group">
-                <span class="menu-label">Support</span>
-                <a href="pages/contact.html" class="sidebar-link">Contact & Data Removal</a>
-            </div>
-        </aside>
-
-        <!-- Dashboard Main View -->
-        <main class="content">
-            <section class="hero">
-                <h1>NyxEclipse Bot Dashboard</h1>
-                <p>Manage your server automation, AI moderation configurations, and review service terms and policies for NyxEclipse.</p>
-                <div class="btn-group">
-                    <a href="pages/Terms of service.html" class="btn btn-primary">View Terms & Privacy Policy</a>
-                    <a href="pages/contact.html" class="btn btn-secondary">Request Data Deletion</a>
+        <section class="fade-in">
+            <h2>Overview & Navigation</h2>
+            <div class="cards">
+                <div class="card">
+                    <span class="status active">Active System</span>
+                    <h3>NyxEclipse Bot</h3>
+                    <p>Core bot management, server configurations, automated moderation, and custom command rules.</p>
+                    <a href="pages/servers.html" class="button" style="padding: 10px 20px; font-size: 0.9rem;">Manage Servers</a>
                 </div>
-            </section>
-        </main>
-    </div>
 
-    <!-- Footer Route Links -->
+                <div class="card">
+                    <span class="status active">AI Integrated</span>
+                    <h3>AI Assistant</h3>
+                    <p>Configure automated responses, moderation safety triggers, and smart server tools.</p>
+                    <a href="pages/AIassistant.html" class="button" style="padding: 10px 20px; font-size: 0.9rem;">Configure AI</a>
+                </div>
+
+                <div class="card">
+                    <span class="status concept">Legal & Policy</span>
+                    <h3>Terms & Data Handling</h3>
+                    <p>Read our Terms of Service, integrated Privacy Policy, and data deletion protocol.</p>
+                    <a href="pages/Terms of service.html" class="button" style="padding: 10px 20px; font-size: 0.9rem;">Read Policies</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
     <footer>
-        <ul class="footer-nav">
-            <li><a href="index.html">Dashboard</a></li>
-            <li><a href="pages/Terms of service.html">Terms of Service</a></li>
-            <li><a href="pages/about.html">About</a></li>
-            <li><a href="pages/contact.html">Contact Support</a></li>
-        </ul>
-        <p class="copyright">&copy; 2026 NyxNexus Development. All rights reserved.</p>
+        <p>&copy; 2026 NyxNexus Development. All rights reserved.</p>
     </footer>
 
     <script src="assets/js/animations.js"></script>
