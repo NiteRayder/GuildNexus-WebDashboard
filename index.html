@@ -1,226 +1,279 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NyxNexus Development — Dashboard & Documentation</title>
+    <style>
+        :root {
+            --bg-color: #0f1117;
+            --card-bg: #161922;
+            --accent-color: #5865f2;
+            --accent-hover: #4752c4;
+            --text-main: #dcddde;
+            --text-muted: #96989d;
+            --border-color: #232733;
+            --heading-color: #ffffff;
+            --sidebar-width: 240px;
+        }
 
-    <title>NyxNexus Development</title>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    <link rel="stylesheet" href="style.css">
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
 
+        /* Top Navigation Bar */
+        .navbar {
+            height: 60px;
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand-title {
+            color: var(--heading-color);
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--heading-color);
+        }
+
+        /* Main Layout */
+        .layout {
+            display: flex;
+            flex: 1;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .menu-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .menu-label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0 8px;
+        }
+
+        .sidebar-link {
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .sidebar-link:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--heading-color);
+        }
+
+        .sidebar-link.active {
+            background-color: var(--accent-color);
+            color: #ffffff;
+        }
+
+        /* Main Content Container */
+        .content {
+            flex: 1;
+            padding: 40px;
+            max-width: 1000px;
+        }
+
+        .hero {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+        }
+
+        .hero h1 {
+            color: var(--heading-color);
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--heading-color);
+        }
+
+        /* Footer Routing */
+        footer {
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 24px;
+            margin-top: auto;
+            text-align: center;
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            list-style: none;
+            margin-bottom: 12px;
+        }
+
+        .footer-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .footer-nav a:hover {
+            color: var(--accent-color);
+        }
+
+        .copyright {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+    </style>
 </head>
-
 <body>
 
-<header>
+    <!-- Top Navigation -->
+    <nav class="navbar">
+        <a href="index.html" class="brand-title">NyxNexus Development</a>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">Dashboard</a></li>
+            <li><a href="terms.html">Terms & Policy</a></li>
+            <li><a href="mailto:discord.stiffen730@passinbox.com">Support</a></li>
+        </ul>
+    </nav>
 
-    <div class="header-container">
+    <div class="layout">
+        <!-- Sidebar Router -->
+        <aside class="sidebar">
+            <div class="menu-group">
+                <span class="menu-label">Overview</span>
+                <a href="index.html" class="sidebar-link active">Dashboard Home</a>
+                <a href="#bots" class="sidebar-link">NyxEclipse Bot</a>
+            </div>
 
-        <div class="logo">
-            Nyx<span>Nexus</span> Development
-        </div>
+            <div class="menu-group">
+                <span class="menu-label">Legal & Data</span>
+                <a href="terms.html" class="sidebar-link">Terms of Service</a>
+                <a href="terms.html#privacy" class="sidebar-link">Privacy Policy</a>
+                <a href="terms.html#data-handling" class="sidebar-link">Data Retention</a>
+            </div>
 
-        <nav>
-            <a href="/NyxNexus-Development/">Home</a>
-            <a href="/NyxNexus-Development/pages/projects.html">Projects</a>
-            <a href="/NyxNexus-Development/pages/roadmap.html">Roadmap</a>
-            <a href="/NyxNexus-Development/pages/about.html">About</a>
-            <a href="/NyxNexus-Development/pages/contact.html">Contact</a>
-        </nav>
+            <div class="menu-group">
+                <span class="menu-label">Support</span>
+                <a href="mailto:discord.stiffen730@passinbox.com" class="sidebar-link">Contact & Removal</a>
+            </div>
+        </aside>
 
+        <!-- Dashboard Main View -->
+        <main class="content">
+            <section class="hero">
+                <h1>NyxEclipse Bot Dashboard</h1>
+                <p>Manage your server automation, AI moderation configurations, and review service terms and policies for NyxEclipse.</p>
+                <div class="btn-group">
+                    <a href="terms.html" class="btn btn-primary">View Terms & Privacy Policy</a>
+                    <a href="mailto:discord.stiffen730@passinbox.com" class="btn btn-secondary">Request Data Deletion</a>
+                </div>
+            </section>
+        </main>
     </div>
 
-</header>
-
-
-<main>
-
-    <!-- Hero -->
-
-    <section class="hero">
-
-        <h1>
-            Building Intelligent Systems
-            <br>
-            and Digital Communities
-        </h1>
-
-        <p>
-            NyxNexus Development is an independent software studio
-            focused on artificial intelligence, community platforms,
-            experimental technologies, and next-generation digital
-            experiences.
-        </p>
-
-        <a href="projects.html" class="button">
-            Explore Projects
-        </a>
-
-    </section>
-
-
-
-    <!-- Active Development -->
-
-    <section>
-
-        <h2>Active Development</h2>
-
-        <div class="cards">
-
-            <article class="card">
-
-                <h3>NyxEclipse</h3>
-
-                <p>
-                    Conversational AI systems and intelligent
-                    digital assistance technologies.
-                </p>
-
-                <p>
-                    <strong>Status:</strong> Active Development
-                </p>
-
-            </article>
-
-
-
-            <article class="card">
-
-                <h3>GuildNexus</h3>
-
-                <p>
-                    Community infrastructure, automation,
-                    and management systems.
-                </p>
-
-                <p>
-                    <strong>Status:</strong> Active Development
-                </p>
-
-            </article>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- Concepts -->
-
-    <section>
-
-        <h2>Concepts</h2>
-
-        <div class="cards">
-
-            <article class="card">
-
-                <h3>OrbitDE</h3>
-
-                <p>
-                    Research into a modular desktop environment
-                    focused on customization and productivity.
-                </p>
-
-                <p>
-                    <strong>Status:</strong> Concept Phase
-                </p>
-
-            </article>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- Paused -->
-
-    <section>
-
-        <h2>Paused Projects</h2>
-
-        <div class="cards">
-
-            <article class="card">
-
-                <h3>Ecliptix</h3>
-
-                <p>
-                    Browser platform project currently paused
-                    pending future evaluation.
-                </p>
-
-                <p>
-                    <strong>Status:</strong> Paused Until Further Notice
-                </p>
-
-            </article>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- Archive -->
-
-    <section>
-
-        <h2>Archive</h2>
-
-        <div class="cards">
-
-            <article class="card">
-
-                <h3>Discord Skins</h3>
-
-                <p>
-                    Legacy customization projects and visual themes
-                    created for Discord.
-                </p>
-
-                <p>
-                    <strong>Status:</strong> Archived
-                </p>
-
-            </article>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- Studio Mission -->
-
-    <section>
-
-        <h2>Our Mission</h2>
-
-        <p>
-            NyxNexus Development exists to explore new ideas in
-            software, artificial intelligence, and digital ecosystems.
-            We believe technology should empower creativity,
-            communities, and individual expression.
-        </p>
-
-    </section>
-
-</main>
-
-
-<footer>
-
-    <p>
-        © 2026 NyxNexus Development
-    </p>
-
-</footer>
+    <!-- Footer Route Links -->
+    <footer>
+        <ul class="footer-nav">
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="terms.html#privacy">Privacy Policy</a></li>
+            <li><a href="mailto:discord.stiffen730@passinbox.com">Contact Support</a></li>
+        </ul>
+        <p class="copyright">&copy; 2026 NyxNexus Development. All rights reserved.</p>
+    </footer>
 
 </body>
-
 </html>
