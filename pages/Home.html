@@ -1,55 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home | NyxEclipse</title>
-  <link rel="stylesheet" href="../style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home — NyxEclipse</title>
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-  <div id="cursor-glow"></div>
-  <div class="orb orb1"></div>
-  <div class="orb orb2"></div>
 
-  <header>
-    <div class="header-container">
-      <div class="logo">Nyx<span>Eclipse</span></div>
-      <nav>
-        <a href="home.html" class="active">Home</a>
-        <a href="NyxEclipseOverview.html">Overview</a>
-        <a href="invite.html">Invite</a>
-        <a href="servers.html">Servers</a>
-        <a href="settings.html">Settings</a>
-      </nav>
-    </div>
-  </header>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div id="cursor-glow"></div>
 
-  <main>
-    <section class="fade-in">
-      <h1>Welcome to NyxEclipse</h1>
-      <p>The centralized ecosystem for server automation, security, and community engagement powered by GuildNexus.</p>
-    </section>
-
-    <section class="fade-in">
-      <div class="cards">
-        <div class="card">
-          <h3>🤖 Bot Integration</h3>
-          <p>Deploy security, leveling, and ticket handling directly to your Discord server.</p>
+    <header>
+        <div class="header-container">
+            <div class="logo">Nyx<span>Eclipse</span></div>
+            <nav>
+                <a href="Home.html" class="active">Home</a>
+                <a href="servers.html">Servers</a>
+                <a href="moderation.html">Moderation</a>
+                <a href="AIassistant.html">AI Assistant</a>
+                <a href="Terms of service.html">Terms & Policy</a>
+            </nav>
         </div>
-        <div class="card">
-          <h3>🛰️ Server Hub</h3>
-          <p>Manage multiple servers with unified configuration and real-time dashboard sync.</p>
-        </div>
-        <div class="card">
-          <h3>🧠 AI Assistant</h3>
-          <p>Automate query responses, sentiment analysis, and smart chat moderation.</p>
-        </div>
-      </div>
-    </section>
-  </main>
+    </header>
 
-  <footer><p>© 2026 NyxEclipse. All rights reserved.</p></footer>
-  <script src="../assets/js/animations.js"></script>
-  <script src="../assets/js/cursor-glow.js"></script>
+    <main>
+        <section class="hero fade-in">
+            <h1>Welcome to <span>NyxEclipse</span></h1>
+            <p>The centralized ecosystem for server automation, security, and community engagement powered by GuildNexus.</p>
+            <div class="flex-center mt-30">
+                <a href="invite.html" class="button">Invite Bot</a>
+                <a href="servers.html" class="button btn-outline">Manage Servers</a>
+            </div>
+        </section>
+
+        <section class="fade-in">
+            <h2>System Overview</h2>
+            <div class="cards">
+                <div class="card">
+                    <span class="status active">Online</span>
+                    <h3>🤖 Bot Integration</h3>
+                    <p>Deploy security, leveling, and ticket handling directly to your Discord server.</p>
+                    <a href="servers.html" class="button btn-small mt-30">Configure</a>
+                </div>
+
+                <div class="card">
+                    <span class="status active">Active</span>
+                    <h3>🛰️ Server Hub</h3>
+                    <p>Manage multiple servers with unified configuration and real-time dashboard sync.</p>
+                    <a href="servers.html" class="button btn-small mt-30">View Servers</a>
+                </div>
+
+                <div class="card">
+                    <span class="status active">AI System</span>
+                    <h3>🧠 AI Assistant</h3>
+                    <p>Automate query responses, sentiment analysis, and smart chat moderation.</p>
+                    <a href="AIassistant.html" class="button btn-small mt-30">AI Settings</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 NyxNexus Development. NyxEclipse Discord Bot.</p>
+    </footer>
+
+    <script src="../assets/js/animations.js"></script>
+    <script src="../assets/js/cursor-glow.js"></script>
+    <script src="../assets/js/loading.js"></script>
 </body>
 </html>
