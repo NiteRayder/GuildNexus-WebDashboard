@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NyxNexus Development — Dashboard & Documentation</title>
+    <link rel="stylesheet" href="style.css">
     <style>
         :root {
             --bg-color: #0f1117;
@@ -85,13 +86,13 @@
             padding: 24px 16px;
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 20px;
         }
 
         .menu-group {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
         .menu-label {
@@ -101,12 +102,13 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
             padding: 0 8px;
+            margin-bottom: 4px;
         }
 
         .sidebar-link {
             color: var(--text-main);
             text-decoration: none;
-            padding: 10px 12px;
+            padding: 8px 12px;
             border-radius: 6px;
             font-size: 0.9rem;
             transition: background 0.2s ease, color 0.2s ease;
@@ -199,6 +201,7 @@
             gap: 24px;
             list-style: none;
             margin-bottom: 12px;
+            flex-wrap: wrap;
         }
 
         .footer-nav a {
@@ -224,8 +227,8 @@
         <a href="index.html" class="brand-title">NyxNexus Development</a>
         <ul class="nav-links">
             <li><a href="index.html" class="active">Dashboard</a></li>
-            <li><a href="TermsOfService.html">Terms & Policy</a></li>
-            <li><a href="mailto:discord.stiffen730@passinbox.com">Support</a></li>
+            <li><a href="pages/Terms of service.html">Terms & Policy</a></li>
+            <li><a href="pages/contact.html">Contact</a></li>
         </ul>
     </nav>
 
@@ -235,21 +238,27 @@
             <div class="menu-group">
                 <span class="menu-label">Overview</span>
                 <a href="index.html" class="sidebar-link active">Dashboard Home</a>
-                <a href="servers.html" class="sidebar-link">Servers</a>
-                <a href="moderation.html" class="sidebar-link">Moderation</a>
-                <a href="automation.html" class="sidebar-link">Automation</a>
-                <a href="integrations.html" class="sidebar-link">Integrations</a>
-                <a href="AIassistant.html" class="sidebar-link">AI Assistant</a>
+                <a href="pages/Home.html" class="sidebar-link">Home</a>
+                <a href="pages/servers.html" class="sidebar-link">Servers</a>
+                <a href="pages/moderation.html" class="sidebar-link">Moderation</a>
+                <a href="pages/automation.html" class="sidebar-link">Automation</a>
+                <a href="pages/integrations.html" class="sidebar-link">Integrations</a>
+                <a href="pages/AIassistant.html" class="sidebar-link">AI Assistant</a>
+                <a href="pages/analytics.html" class="sidebar-link">Analytics</a>
+                <a href="pages/roadmap.html" class="sidebar-link">Roadmap</a>
+                <a href="pages/invite.html" class="sidebar-link">Invite Bot</a>
             </div>
 
             <div class="menu-group">
-                <a href="settings.html" class="sidebar-link">Settings</a>
-                <a href="TermsOfService.html" class="sidebar-link">Terms of Service</a>
+                <span class="menu-label">Account & Legal</span>
+                <a href="pages/settings.html" class="sidebar-link">Settings</a>
+                <a href="pages/about.html" class="sidebar-link">About</a>
+                <a href="pages/Terms of service.html" class="sidebar-link">Terms of Service</a>
             </div>
 
             <div class="menu-group">
                 <span class="menu-label">Support</span>
-                <a href="mailto:discord.stiffen730@passinbox.com" class="sidebar-link">Contact & Removal</a>
+                <a href="pages/contact.html" class="sidebar-link">Contact & Data Removal</a>
             </div>
         </aside>
 
@@ -259,8 +268,8 @@
                 <h1>NyxEclipse Bot Dashboard</h1>
                 <p>Manage your server automation, AI moderation configurations, and review service terms and policies for NyxEclipse.</p>
                 <div class="btn-group">
-                    <a href="TermsOfService.html" class="btn btn-primary">View Terms & Privacy Policy</a>
-                    <a href="mailto:discord.stiffen730@passinbox.com" class="btn btn-secondary">Request Data Deletion</a>
+                    <a href="pages/Terms of service.html" class="btn btn-primary">View Terms & Privacy Policy</a>
+                    <a href="pages/contact.html" class="btn btn-secondary">Request Data Deletion</a>
                 </div>
             </section>
         </main>
@@ -270,12 +279,15 @@
     <footer>
         <ul class="footer-nav">
             <li><a href="index.html">Dashboard</a></li>
-            <li><a href="TermsOfService.html">Terms of Service</a></li>
-            <li><a href="TermsOfService.html#privacy">Privacy Policy</a></li>
-            <li><a href="mailto:discord.stiffen730@passinbox.com">Contact Support</a></li>
+            <li><a href="pages/Terms of service.html">Terms of Service</a></li>
+            <li><a href="pages/about.html">About</a></li>
+            <li><a href="pages/contact.html">Contact Support</a></li>
         </ul>
         <p class="copyright">&copy; 2026 NyxNexus Development. All rights reserved.</p>
     </footer>
 
+    <script src="assets/js/animations.js"></script>
+    <script src="assets/js/cursor-glow.js"></script>
+    <script src="assets/js/loading.js"></script>
 </body>
 </html>
