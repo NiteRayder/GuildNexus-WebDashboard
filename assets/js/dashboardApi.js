@@ -4,7 +4,7 @@ export const NYXECLIPSE_API = 'https://nyxeclipse.apps.bot-hosting.cloud';
 
 async function request(path, options = {}) {
   const session = getStoredSession();
-  if (!session?.accessToken) throw new Error('Connect Discord before using GuildNexus.');
+  if (!session?.authenticated) throw new Error('Connect Discord before using GuildNexus.');
 
   const response = await fetch(`${NYXECLIPSE_API}${path}`, {
     ...options,
@@ -13,6 +13,7 @@ async function request(path, options = {}) {
       ...(options.body ? { 'Content-Type': 'application/json' } : {}),
       ...(options.headers || {}),
       ...(session?.accessToken ? { Authorization: `Bearer ${session.accessToken}` } : {}),
+    },
     credentials: 'include',
     },
   });
