@@ -31,6 +31,7 @@ export const dashboardApi = {
   guilds: () => request('/api/dashboard/guilds'),
   guild: (guildId) => request(`/api/dashboard/guilds/${encodeURIComponent(guildId)}`),
   resources: (guildId) => request(`/api/dashboard/guilds/${encodeURIComponent(guildId)}/resources`),
+  member: (guildId, userId) => request(`/api/dashboard/guilds/${encodeURIComponent(guildId)}/members/${encodeURIComponent(userId)}`),
   cases: (guildId, params = {}) => {
     const query = new URLSearchParams(params);
     return request(`/api/dashboard/guilds/${encodeURIComponent(guildId)}/cases?${query}`);
