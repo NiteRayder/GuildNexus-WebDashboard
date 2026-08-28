@@ -1,0 +1,51 @@
+import { getStoredSession } from './DiscordOAuth.js';
+
+export const NYXECLIPSE_API = 'https://nyxeclipse.apps.bot-hosting.cloud';
+
+async function request(path, options = {}) {
+  const session = getStoredSession();
+  if (!session?.accessToken) throw new Error('Connect Discord before using GuildNexus.');
+
+  const response = await fetch(`${NYXECLIPSE_API}${path}`, {
+    ...options,
+    headers: {
+      Accept: 'application/json',
+      ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+      ...(options.headers || {}),
+      Authorization: `Bearer ${session.accessToken}`,
+    },
+  });
+
+  let data = null;
+  try { data = await response.json(); } catch {}
+
+  if (!response.ok) {
+    if (response.status === 401) localStorage.removeItem('guildnexus_discord_session');
+    throw new Error(data?.error || `GuildNexus API request failed (${response.status}).`);
+  }
+  return data;
+}
+
+export const dashboardApi = {
+  me: () => request('/api/dashboard/me'),
+  guilds: () => request('/api/dashboard/guilds'),
+  guild: (guildId) => request(`/api/dashboard/guilds/${encodeURIComponent(guildId)}`),
+  resources: (guildId) => request(`/api/dashboard/guilds/${encodeURIComponent(guildId)}/resources`),
+  cases: (guildId, params = {}) => {
+    const query = new URLSearchParams(params);
+    return request(`/api/dashboard/guilds/${encodeURIComponent(guildId)}/cases?${query}`);
+  },
+  updateConfig: (guildId, patch) => request(`/api/dashboard/guilds/${encodeURIComponent(guildId)}/config`, {
+    method: 'PATCH',
+    body: JSON.stringify(patch),
+  }),
+};
+
+export function getSelectedGuildId() {
+  return localStorage.getItem('guildnexus_selected_guild');
+}
+
+export function setSelectedGuildId(guildId) {
+  if (guildId) localStorage.setItem('guildnexus_selected_guild', guildId);
+  else localStorage.removeItem('guildnexus_selected_guild');
+}
