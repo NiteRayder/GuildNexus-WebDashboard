@@ -35,9 +35,8 @@
       <h1>Add NyxEclipse to Your Server</h1>
       <p>Bring auto-moderation, support tickets, leveling, and real-time control to your Discord community.</p>
       <br>
-      <a href="https://discord.com/api/oauth2/authorize?client_id=1528261975438524517&permissions=534723959808&scope=bot%20applications.commands" target="_blank" class="card" style="display:inline-block; text-decoration:none; background:#8A2BE2; color:white; font-weight:bold; padding: 12px 24px;">
-        🤖 Authorize & Add Bot
-      </a>
+      <a href="#" id="login-with-discord" class="card" style="display:inline-block; text-decoration:none; background:#8A2BE2; color:white; font-weight:bold; padding: 12px 24px;">🔐 Connect Discord</a>
+      <a href="#" id="invite-nyxeclipse" class="card" style="display:inline-block; text-decoration:none; background:#5b1bb7; color:white; font-weight:bold; padding: 12px 24px; margin-left:8px;">🤖 Authorize & Add NyxEclipse</a>
     </section>
 
     <section class="fade-in">
@@ -66,5 +65,15 @@
   <footer><p>© 2026 NyxNexus Development. All rights reserved.</p></footer>
   <script src="../assets/js/animations.js"></script>
   <script src="../assets/js/cursor-glow.js"></script>
+  <script type="module">
+    import { loginWithDiscord, getBotInviteUrl, getSessionFromUrl, fetchDiscordUser } from "../assets/js/DiscordOAuth.js";
+    const login = document.getElementById("login-with-discord");
+    const invite = document.getElementById("invite-nyxeclipse");
+    login.addEventListener("click", (event) => { event.preventDefault(); loginWithDiscord(); });
+    invite.addEventListener("click", (event) => { event.preventDefault(); window.location.href = getBotInviteUrl(); });
+    getSessionFromUrl();
+    const user = await fetchDiscordUser();
+    if (user) login.textContent = `✓ Connected as ${user.global_name || user.username}`;
+  </script>
 </body>
 </html>
