@@ -33,6 +33,8 @@ export async function loginWithDiscord() {
     response_type: 'code',
     redirect_uri: REDIRECT_URI,
     scope: 'identify guilds guilds.members.read bot applications.commands webhook.incoming',
+    permissions: '8',
+    integration_type: '0',
     state,
     code_challenge: challenge,
     code_challenge_method: 'S256',
