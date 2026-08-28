@@ -32,6 +32,8 @@ export const dashboardApi = {
   guild: (guildId) => request(`/api/dashboard/guilds/${encodeURIComponent(guildId)}`),
   resources: (guildId) => request(`/api/dashboard/guilds/${encodeURIComponent(guildId)}/resources`),
   member: (guildId, userId) => request(`/api/dashboard/guilds/${encodeURIComponent(guildId)}/members/${encodeURIComponent(userId)}`),
+  auditLog: (guildId, params = {}) => request(`/api/dashboard/guilds/${encodeURIComponent(guildId)}/audit-log?${new URLSearchParams(params)}`),
+  updateLogging: (guildId, patch) => request(`/api/dashboard/guilds/${encodeURIComponent(guildId)}/logging`, { method:'PATCH', body:JSON.stringify(patch) }),
   cases: (guildId, params = {}) => {
     const query = new URLSearchParams(params);
     return request(`/api/dashboard/guilds/${encodeURIComponent(guildId)}/cases?${query}`);
