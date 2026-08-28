@@ -12,7 +12,8 @@ async function request(path, options = {}) {
       Accept: 'application/json',
       ...(options.body ? { 'Content-Type': 'application/json' } : {}),
       ...(options.headers || {}),
-      Authorization: `Bearer ${session.accessToken}`,
+      ...(session?.accessToken ? { Authorization: `Bearer ${session.accessToken}` } : {}),
+    credentials: 'include',
     },
   });
 
