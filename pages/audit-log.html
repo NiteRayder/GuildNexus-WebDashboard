@@ -5,4 +5,5 @@
 import {dashboardApi,getSelectedGuildId} from '../assets/js/dashboardApi.js';
 const guildId=getSelectedGuildId(), list=document.getElementById('audit-list'),status=document.getElementById('audit-status');
 async function load(){if(!guildId){list.textContent='Select a server first.';return}status.textContent='Loading…';try{const d=await dashboardApi.auditLog(guildId,{limit:100});document.getElementById('audit-subtitle').textContent=d.channel?'#'+d.channel.name+' · '+(d.enabled?'Enabled':'Disabled'):'No audit channel configured';list.innerHTML=d.events.length?d.events.map(e=>'<article class="card" style="margin:12px 0"><h3>'+esc(e.embed.title||'Audit Event')+'</h3><small>'+new Date(e.createdAt).toLocaleString()+'</small><p>'+esc(e.embed.description||'')+'</p>'+(e.url?'<a href="'+esc(e.url)+'" target="_blank" rel="noopener">Open Discord message</a>':'')+'</article>').join(''):'No audit events found.';status.textContent='Updated '+new Date().toLocaleTimeString()}catch(e){status.textContent=e.message}}function esc(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}document.getElementById('refresh-audit').onclick=load;load();
-</script></body></html>
+</script><script src="../assets/js/animations.js"></script>
+</body></html>
