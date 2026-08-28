@@ -1,60 +1,70 @@
-// src/disc_oath.js
+const NYXECLIPSE_API = 'https://nyxeclipse.apps.bot-hosting.cloud';
+const DISCORD_CLIENT_ID = '1528261975438524517';
+const SESSION_KEY = 'guildnexus_session';
 
-// Replace with your actual Client ID from the Discord Developer Portal
-const CLIENT_ID = '1528261975438524517';
-
-/**
- * Dynamically gets your current page URL (works on GitHub Pages)
- */
-function getRedirectUri() {
-  const url = new URL(window.location.href);
-  return `${url.origin}${url.pathname}`;
+export function getBotInviteUrl() {
+  const params = new URLSearchParams({
+    client_id: DISCORD_CLIENT_ID,
+    permissions: '534723959808',
+    scope: 'bot applications.commands',
+  });
+  return `https://discord.com/oauth2/authorize?${params.toString()}`;
 }
 
-/**
- * Redirects user to Discord OAuth login
- */
 export function loginWithDiscord() {
-  const scope = encodeURIComponent('identify email');
-  const redirectUri = encodeURIComponent(getRedirectUri());
-  const authUrl = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}`;
-
-  window.location.href = authUrl;
+  window.location.href = `${NYXECLIPSE_API}/api/oauth/discord`;
 }
 
-/**
- * Parses access token from URL fragment after Discord redirects back
- */
-export function getAccessTokenFromUrl() {
-  const hash = window.location.hash;
-  if (!hash) return null;
-
-  const params = new URLSearchParams(hash.substring(1));
-  const accessToken = params.get('access_token');
-
-  if (accessToken) {
-    // Clear the token hash from the browser URL bar cleanly
-    window.history.replaceState(null, '', window.location.pathname);
-    return accessToken;
-  }
-  return null;
+export function getSessionFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const session = params.get('session');
+  if (!session) return getStoredSession();
+  localStorage.setItem(SESSION_KEY, session);
+  window.history.replaceState({}, document.title, window.location.pathname);
+  return session;
 }
 
-/**
- * Fetches Discord user profile
- */
-export async function fetchDiscordUser(token) {
-  try {
-    const response = await fetch('https://discord.com/api/v10/users/@me', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+export function getStoredSession() {
+  return localStorage.getItem(SESSION_KEY);
+}
 
-    if (!response.ok) throw new Error('Token invalid or expired');
-    return await response.json();
-  } catch (err) {
-    console.error('Failed to fetch Discord user:', err);
+export async function fetchDiscordUser(sessionToken = getSessionFromUrl()) {
+  if (!sessionToken) return null;
+  const response = await fetch(`${NYXECLIPSE_API}/api/oauth/me`, {
+    headers: { Authorization: `Bearer ${sessionToken}` },
+  });
+  if (!response.ok) {
+    localStorage.removeItem(SESSION_KEY);
     return null;
   }
+  const data = await response.json();
+  return data.user ?? null;
 }
+
+export async function fetchManageableGuilds(sessionToken = getStoredSession()) {
+  if (!sessionToken) return [];
+  const response = await fetch(`${NYXECLIPSE_API}/api/oauth/guilds`, {
+    headers: { Authorization: `Bearer ${sessionToken}` },
+  });
+  if (!response.ok) {
+    if (response.status === 401) localStorage.removeItem(SESSION_KEY);
+    throw new Error('Unable to retrieve Discord servers.');
+  }
+  const data = await response.json();
+  return data.guilds ?? [];
+}
+
+export async function logoutFromDiscord(sessionToken = getStoredSession()) {
+  try {
+    if (sessionToken) {
+      await fetch(`${NYXECLIPSE_API}/api/oauth/logout`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${sessionToken}` },
+      });
+    }
+  } finally {
+    localStorage.removeItem(SESSION_KEY);
+  }
+}
+
+export { NYXECLIPSE_API };
