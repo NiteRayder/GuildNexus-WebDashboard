@@ -66,14 +66,30 @@
   <script src="../assets/js/animations.js"></script>
   <script src="../assets/js/cursor-glow.js"></script>
   <script type="module">
-    import { loginWithDiscord, getBotInviteUrl, getSessionFromUrl, fetchDiscordUser } from "../assets/js/DiscordOAuth.js";
+    import { loginWithDiscord, getBotInviteUrl, handleOAuthCallback, getStoredSession, logoutFromDiscord } from "../assets/js/DiscordOAuth.js";
+
     const login = document.getElementById("login-with-discord");
     const invite = document.getElementById("invite-nyxeclipse");
-    login.addEventListener("click", (event) => { event.preventDefault(); loginWithDiscord(); });
-    invite.addEventListener("click", (event) => { event.preventDefault(); window.location.href = getBotInviteUrl(); });
-    getSessionFromUrl();
-    const user = await fetchDiscordUser();
-    if (user) login.textContent = `✓ Connected as ${user.global_name || user.username}`;
+
+    login.addEventListener("click", async (event) => {
+      event.preventDefault();
+      await loginWithDiscord();
+    });
+
+    invite.addEventListener("click", (event) => {
+      event.preventDefault();
+      window.location.assign(getBotInviteUrl());
+    });
+
+    try {
+      const session = await handleOAuthCallback();
+      if (session?.user) {
+        login.textContent = `✓ Connected as ${session.user.global_name || session.user.username}`;
+      }
+    } catch (error) {
+      console.error(error);
+      login.textContent = "⚠ Discord connection failed";
+    }
   </script>
 </body>
 </html>
