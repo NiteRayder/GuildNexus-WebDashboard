@@ -1,6 +1,6 @@
 const DISCORD_API = 'https://discord.com/api/v10';
 const DISCORD_CLIENT_ID = '1528261975438524517';
-const REDIRECT_URI = 'https://nyxnexus-development.github.io/GuildNexus-WebDashboard/pages/invite.html';
+const REDIRECT_URI = 'https://niterayder.github.io/GuildNexus-WebDashboard/pages/invite.html';
 const SESSION_KEY = 'guildnexus_discord_session';
 const PKCE_VERIFIER_KEY = 'guildnexus_pkce_verifier';
 const STATE_KEY = 'guildnexus_oauth_state';
@@ -32,7 +32,7 @@ export async function loginWithDiscord() {
     client_id: DISCORD_CLIENT_ID,
     response_type: 'code',
     redirect_uri: REDIRECT_URI,
-    scope: 'identify guilds',
+    scope: 'identify guilds guilds.members.read bot applications.commands webhook.incoming',
     state,
     code_challenge: challenge,
     code_challenge_method: 'S256',
@@ -44,7 +44,7 @@ export async function loginWithDiscord() {
 export function getBotInviteUrl() {
   const params = new URLSearchParams({
     client_id: DISCORD_CLIENT_ID,
-    permissions: '534723959808',
+    permissions: '8',
     scope: 'bot applications.commands',
   });
   return `https://discord.com/oauth2/authorize?${params.toString()}`;
