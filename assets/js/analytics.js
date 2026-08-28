@@ -1,0 +1,6 @@
+import { dashboardApi, getSelectedGuildId } from './dashboardApi.js';
+document.addEventListener('DOMContentLoaded', async () => {
+ const main=document.querySelector('main'); const guildId=getSelectedGuildId();
+ if(!main||!guildId){if(main)main.insertAdjacentHTML('beforeend','<section><div class="card"><h3>Select a server first</h3><a class="button btn-small" href="servers.html">Choose Server</a></div></section>');return;}
+ try{const {guild}=await dashboardApi.guild(guildId); const s=document.createElement('section'); s.className='fade-in'; s.innerHTML='<h2>'+esc(guild.name)+' Live Overview</h2><div class="cards"><div class="card"><h3>'+guild.memberCount+'</h3><p>Total Members</p></div><div class="card"><h3>'+guild.humanCount+'</h3><p>Human Members</p></div><div class="card"><h3>'+guild.botCount+'</h3><p>Bots</p></div><div class="card"><h3>'+guild.channels+'</h3><p>Channels</p></div><div class="card"><h3>'+guild.roles+'</h3><p>Roles</p></div></div>'; main.appendChild(s);}catch(e){main.insertAdjacentHTML('beforeend','<section><div class="card"><h3>Unable to load analytics</h3><p>'+esc(e.message)+'</p></div></section>')}});
+function esc(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
