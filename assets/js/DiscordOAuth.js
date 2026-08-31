@@ -1,4 +1,4 @@
-const NYXECLIPSE_API = 'https://nyxeclipse.apps.bot-hosting.cloud';
+const NYXECLIPSE_API = 'https://niterayder.github.io/GuildNexus-WebDashboard/pages/invite.html';
 const SESSION_KEY = 'guildnexus_discord_session';
 
 export async function loginWithDiscord() {
