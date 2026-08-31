@@ -46,22 +46,16 @@
 
 
 
-
 <main>
 
 
 <section class="fade-in">
 
 
-<h1>
-Contact
-</h1>
+<h1>Contact</h1>
 
 
-<p>
-Have questions, feedback, or collaboration
-ideas? Reach out through the options below.
-</p>
+<p>Have questions, feedback, or collaboration ideas? Reach out through the options below.</p>
 
 
 </section>
@@ -69,52 +63,28 @@ ideas? Reach out through the options below.
 
 
 
-
-
 <section class="contact-section fade-in">
 
 
-<h2>
-Send a Message
-</h2>
+<h2>Send a Message</h2>
 
 
-<form class="contact-form">
+<form class="contact-form" id="contact-form">
 
 
-<label>
-Name
-</label>
+<label for="name">Name</label>
+<input type="text" id="name" name="name" placeholder="Your Name" required>
 
 
-<input type="text" placeholder="Your Name">
+<label for="email">Email</label>
+<input type="email" id="email" name="email" placeholder="Your Email" required>
 
 
-
-<label>
-Email
-</label>
+<label for="message">Message</label>
+<textarea id="message" name="message" rows="8" placeholder="Your message..." required></textarea>
 
 
-<input type="email" placeholder="Your Email">
-
-
-
-<label>
-Message
-</label>
-
-
-<textarea rows="8"
-placeholder="Your message...">
-</textarea>
-
-
-
-
-<button type="submit">
-Send Message
-</button>
+<button type="submit">Send Message</button>
 
 
 </form>
@@ -125,15 +95,10 @@ Send Message
 
 
 
-
-
-
 <section class="fade-in">
 
 
-<h2>
-Find Us
-</h2>
+<h2>Find Us</h2>
 
 
 <div class="cards">
@@ -142,19 +107,13 @@ Find Us
 
 <div class="card">
 
-<h3>
-GitHub
-</h3>
+<h3>GitHub</h3>
 
 
-<p>
-Source code and development updates.
-</p>
+<p>Source code and development updates.</p>
 
 
-<a href="#" class="button">
-GitHub
-</a>
+<a href="https://github.com/NiteRayder/GuildNexus-WebDashboard" target="_blank" class="button">GitHub</a>
 
 
 </div>
@@ -164,19 +123,13 @@ GitHub
 
 <div class="card">
 
-<h3>
-Discord
-</h3>
+<h3>Discord</h3>
 
 
-<p>
-Community discussions and updates.
-</p>
+<p>Community discussions and updates.</p>
 
 
-<a href="#" class="button">
-Discord
-</a>
+<a href="https://discord.gg/gyKXpkc8pb" target="_blank" class="button">Discord</a>
 
 
 </div>
@@ -186,19 +139,13 @@ Discord
 
 <div class="card">
 
-<h3>
-Email
-</h3>
+<h3>Email</h3>
 
 
-<p>
-Professional inquiries and contact.
-</p>
+<p>Professional inquiries and contact.</p>
 
 
-<a href="#" class="button">
-Email
-</a>
+<a href="mailto:contact@nyxeclipse.dev" class="button">Email</a>
 
 
 </div>
@@ -217,15 +164,11 @@ Email
 
 
 
-
 <footer>
 
-<p>
-© 2026 NyxNexus Development
-</p>
+<p>© 2026 NyxNexus Development</p>
 
 </footer>
-
 
 
 
@@ -233,7 +176,33 @@ Email
 <script src="../assets/js/animations.js"></script>
 <script src="../assets/js/cursor-glow.js"></script>
 <script src="../assets/js/loading.js"></script>
-
+<script src="../assets/js/global.js"></script>
+<script>
+document.getElementById('contact-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData);
+    
+    try {
+        // Replace with your actual backend endpoint
+        const response = await fetch('https://api.example.com/guildnexus/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        
+        if (response.ok) {
+            showToast('Message sent successfully! We\'ll get back to you soon.', 'success');
+            e.target.reset();
+        } else {
+            showToast('Failed to send message. Please try again.', 'error');
+        }
+    } catch (error) {
+        showToast('Error sending message. Please check your connection.', 'error');
+        console.error(error);
+    }
+});
+</script>
 
 </body>
 </html>
