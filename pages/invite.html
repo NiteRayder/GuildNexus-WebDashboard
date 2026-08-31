@@ -88,7 +88,7 @@
       }
     } catch (error) {
       console.error(error);
-      login.textContent = "⚠ Discord connection failed";
+      login.textContent = `⚠ Discord connection failed: ${error.message || "Unable to start Discord authentication."}`;
     }
   </script>
 </body>
