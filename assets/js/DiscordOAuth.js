@@ -1,8 +1,14 @@
-const NYXECLIPSE_API = 'https://niterayder.github.io/GuildNexus-WebDashboard/pages/invite.html';
+const NYXECLIPSE_API = 'https://api.example.com/guildnexus';
 const SESSION_KEY = 'guildnexus_discord_session';
 
 export async function loginWithDiscord() {
-  window.location.assign(`${NYXECLIPSE_API}/api/auth/discord`);
+  const redirectUri = 'https://niterayder.github.io/GuildNexus-WebDashboard/pages/invite.html';
+  const clientId = '1528261975438524517';
+  const permissions = '8';
+  const scope = 'guilds+messages.read+guilds.join+bot+guilds.members.read+applications.commands';
+  
+  const authUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&permissions=${permissions}&response_type=code&redirect_uri=${encodeURIComponent(redirectUri)}&integration_type=0&scope=${scope}`;
+  window.location.assign(authUrl);
 }
 
 export function getStoredSession() {
