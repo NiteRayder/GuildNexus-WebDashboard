@@ -12,7 +12,7 @@ async function request(path, options = {}) {
       Accept: 'application/json',
       ...(options.body ? { 'Content-Type': 'application/json' } : {}),
       ...(options.headers || {}),
-      ...(session?.accessToken ? { Authorization: `Bearer ${session.accessToken}` } : {}),
+      ...(session?.sessionToken ? { Authorization: `Bearer ${session.sessionToken}` } : {}),
     },
     credentials: 'include',
     },
