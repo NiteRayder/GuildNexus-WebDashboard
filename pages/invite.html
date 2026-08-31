@@ -35,8 +35,10 @@
       <h1>Add NyxEclipse to Your Server</h1>
       <p>Bring auto-moderation, support tickets, leveling, and real-time control to your Discord community.</p>
       <br>
-      <a href="#" id="login-with-discord" class="card" style="display:inline-block; text-decoration:none; background:#8A2BE2; color:white; font-weight:bold; padding: 12px 24px;">🔐 Connect Discord</a>
-      <a href="#" id="invite-nyxeclipse" class="card" style="display:inline-block; text-decoration:none; background:#5b1bb7; color:white; font-weight:bold; padding: 12px 24px; margin-left:8px;">🤖 Authorize & Add NyxEclipse</a>
+      <div class="flex-center mt-30">
+        <a href="#" id="login-with-discord" class="button">🔐 Connect Discord</a>
+        <a href="#" id="invite-nyxeclipse" class="button btn-outline">➕ Invite Bot</a>
+      </div>
     </section>
 
     <section class="fade-in">
@@ -65,6 +67,7 @@
   <footer><p>© 2026 NyxNexus Development. All rights reserved.</p></footer>
   <script src="../assets/js/animations.js"></script>
   <script src="../assets/js/cursor-glow.js"></script>
+  <script src="../assets/js/loading.js"></script>
   <script type="module">
     import { loginWithDiscord, getBotInviteUrl, handleOAuthCallback, getStoredSession, logoutFromDiscord } from "../assets/js/DiscordOAuth.js";
 
