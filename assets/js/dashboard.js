@@ -4,7 +4,7 @@ import { getStoredSession, loginWithDiscord } from './DiscordOAuth.js';
 document.addEventListener('DOMContentLoaded', async () => {
   const hero = document.querySelector('.hero');
   const session = getStoredSession();
-  if (!session?.accessToken) {
+  if (!session?.sessionToken) {
     const button = document.getElementById('dashboard-connect');
     button?.addEventListener('click', loginWithDiscord);
     return;
