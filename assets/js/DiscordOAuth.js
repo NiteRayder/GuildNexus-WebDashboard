@@ -13,10 +13,19 @@ export function getStoredSession() {
 export function clearSession() { localStorage.removeItem(SESSION_KEY); }
 
 export async function handleOAuthCallback() {
-  const response = await fetch(`${NYXECLIPSE_API}/api/auth/session`, { credentials:'include', headers:{Accept:'application/json'} });
+  const hash = new URLSearchParams(window.location.hash.slice(1));
+  const sessionToken = hash.get('session');
+  if (sessionToken) {
+    localStorage.setItem(SESSION_KEY, JSON.stringify({ sessionToken, authenticated:true }));
+    history.replaceState(null, document.title, window.location.pathname + window.location.search);
+  }
+  const stored = getStoredSession();
+  const headers = { Accept:'application/json' };
+  if (stored?.sessionToken) headers.Authorization = `Bearer ${stored.sessionToken}`;
+  const response = await fetch(`${NYXECLIPSE_API}/api/auth/session`, { credentials:'include', headers });
   if (!response.ok) { clearSession(); return null; }
   const data = await response.json();
-  const session = { user:data.user, authenticated:true };
+  const session = { ...stored, user:data.user, authenticated:true };
   localStorage.setItem(SESSION_KEY, JSON.stringify(session));
   return session;
 }
