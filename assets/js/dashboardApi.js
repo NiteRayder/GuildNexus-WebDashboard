@@ -1,6 +1,6 @@
 import { getStoredSession } from './DiscordOAuth.js';
 
-export const NYXECLIPSE_API = 'https://nyxeclipse.apps.bot-hosting.cloud';
+export const NYXECLIPSE_API = 'https://discord.com/oauth2/authorize?client_id=1528261975438524517&permissions=8&response_type=code&redirect_uri=https%3A%2F%2Fniterayder.github.io%2FGuildNexus-WebDashboard%2Fpages%2Finvite.html&integration_type=0&scope=guilds+messages.read+guilds.join+bot+guilds.members.read+applications.commands+role_connections.write';
 
 async function request(path, options = {}) {
   const session = getStoredSession();
