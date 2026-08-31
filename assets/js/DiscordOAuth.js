@@ -56,7 +56,7 @@ export function getBotInviteUrl() {
   const params = new URLSearchParams({
     client_id: '1528261975438524517',
     permissions: '8',
-    scope: 'bot applications.commands',
+    scope: 'guilds messages.read guilds.join bot guilds.members.read applications.commands roles_connections.write',
   });
   return `https://discord.com/oauth2/authorize?${params.toString()}`;
 }
