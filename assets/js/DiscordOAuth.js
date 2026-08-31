@@ -39,7 +39,10 @@ export async function fetchDiscordUser() {
 }
 
 export async function fetchManageableGuilds() {
-  const response = await fetch(`${NYXECLIPSE_API}/api/dashboard/guilds`, { credentials:'include', headers:{Accept:'application/json'} });
+  const session = getStoredSession();
+  const headers = { Accept:'application/json' };
+  if (session?.sessionToken) headers.Authorization = `Bearer ${session.sessionToken}`;
+  const response = await fetch(`${NYXECLIPSE_API}/api/dashboard/guilds`, { credentials:'include', headers });
   if (!response.ok) throw new Error('Unable to retrieve Discord servers.');
   return (await response.json()).guilds || [];
 }
