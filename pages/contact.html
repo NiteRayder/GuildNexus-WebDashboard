@@ -37,6 +37,7 @@
             <a href="automation.html">Automation</a>
             <a href="AIassistant.html">AI Assistant</a>
             <a href="Terms%20of%20service.html">Terms & Policy</a>
+            <a href="support-server.html">Support Server</a>
             <a href="contact.html">Contact Us</a>
             <a href="settings.html">Settings</a>
         </nav>
@@ -113,7 +114,7 @@
 <p>Source code and development updates.</p>
 
 
-<a href="https://github.com/NiteRayder/GuildNexus-WebDashboard" target="_blank" class="button">GitHub</a>
+<a href="https://github.com/NiteRayder/GuildNexus-WebDashboard" target="_blank" rel="noopener noreferrer" class="button">GitHub</a>
 
 
 </div>
@@ -123,13 +124,13 @@
 
 <div class="card">
 
-<h3>Discord</h3>
+<h3>Support Server</h3>
 
 
-<p>Community discussions and updates.</p>
+<p>Community discussions, support, issue reports, and updates.</p>
 
 
-<a href="https://discord.gg/gyKXpkc8pb" target="_blank" class="button">Discord</a>
+<a href="support-server.html" class="button">Support Server</a>
 
 
 </div>
@@ -142,10 +143,10 @@
 <h3>Email</h3>
 
 
-<p>Professional inquiries and contact.</p>
+<p>Professional inquiries, privacy questions, and contact.</p>
 
 
-<a href="mailto:contact@nyxeclipse.dev" class="button">Email</a>
+<a href="mailto:nyxnexus-development@smailor.com" class="button">Email</a>
 
 
 </div>
@@ -184,8 +185,8 @@ document.getElementById('contact-form')?.addEventListener('submit', async (e) =>
     const data = Object.fromEntries(formData);
     
     try {
-        // Replace with your actual backend endpoint
-        const response = await fetch('https://api.example.com/guildnexus/contact', {
+        // Contact form delivery is handled by the NyxEclipse API.
+        const response = await fetch('https://nyxeclipse.apps.bot-hosting.cloud/contact', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
