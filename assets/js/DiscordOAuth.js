@@ -1,4 +1,4 @@
-const NYXECLIPSE_API = 'https://api.example.com/guildnexus';
+const NYXECLIPSE_API = 'https://nyxeclipse.apps.bot-hosting.cloud';
 const DISCORD_CLIENT_ID = '1528261975438524517';
 const DASHBOARD_REDIRECT_URI = 'https://niterayder.github.io/GuildNexus-WebDashboard/pages/invite.html';
 const SESSION_KEY = 'guildnexus_discord_session';
@@ -24,19 +24,62 @@ export function getStoredSession() {
 export function clearSession() { localStorage.removeItem(SESSION_KEY); }
 
 export async function handleOAuthCallback() {
-  const hash = new URLSearchParams(window.location.hash.slice(1));
-  const sessionToken = hash.get('session');
-  if (sessionToken) {
-    localStorage.setItem(SESSION_KEY, JSON.stringify({ sessionToken, authenticated:true }));
-    history.replaceState(null, document.title, window.location.pathname + window.location.search);
+  const url = new URL(window.location.href);
+  const code = url.searchParams.get('code');
+  const error = url.searchParams.get('error');
+
+  if (error) {
+    throw new Error(`Discord authorization was not completed (${error}).`);
   }
+
+  // Discord returns an authorization code in the query string. Exchange it
+  // through NyxEclipse so the Discord client secret never reaches the browser.
+  if (code) {
+    const response = await fetch(`${NYXECLIPSE_API}/api/auth/discord/callback`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ code }),
+      credentials: 'include',
+    });
+
+    let data = null;
+    try { data = await response.json(); } catch {}
+    if (!response.ok || !data?.sessionToken) {
+      throw new Error(data?.error || 'Discord authorization could not be completed.');
+    }
+
+    localStorage.setItem(SESSION_KEY, JSON.stringify({
+      sessionToken: data.sessionToken,
+      user: data.user,
+      authenticated: true,
+    }));
+
+    // Remove the one-time OAuth code from the visible URL.
+    url.searchParams.delete('code');
+    url.searchParams.delete('state');
+    url.searchParams.delete('error');
+    url.searchParams.delete('error_description');
+    history.replaceState(null, document.title, url.pathname + url.search);
+  }
+
   const stored = getStoredSession();
-  const headers = { Accept:'application/json' };
-  if (stored?.sessionToken) headers.Authorization = `Bearer ${stored.sessionToken}`;
-  const response = await fetch(`${NYXECLIPSE_API}/api/auth/session`, { credentials:'include', headers });
-  if (!response.ok) { clearSession(); return null; }
+  if (!stored?.sessionToken) return null;
+
+  const response = await fetch(`${NYXECLIPSE_API}/api/auth/session`, {
+    credentials: 'include',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${stored.sessionToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    clearSession();
+    return null;
+  }
+
   const data = await response.json();
-  const session = { ...stored, user:data.user, authenticated:true };
+  const session = { ...stored, user: data.user, authenticated: true };
   localStorage.setItem(SESSION_KEY, JSON.stringify(session));
   return session;
 }
@@ -51,15 +94,27 @@ export async function fetchDiscordUser() {
 
 export async function fetchManageableGuilds() {
   const session = getStoredSession();
-  const headers = { Accept:'application/json' };
-  if (session?.sessionToken) headers.Authorization = `Bearer ${session.sessionToken}`;
-  const response = await fetch(`${NYXECLIPSE_API}/api/dashboard/guilds`, { credentials:'include', headers });
+  if (!session?.sessionToken) throw new Error('Connect Discord before loading servers.');
+
+  const response = await fetch(`${NYXECLIPSE_API}/api/dashboard/guilds`, {
+    credentials: 'include',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${session.sessionToken}`,
+    },
+  });
+
   if (!response.ok) throw new Error('Unable to retrieve Discord servers.');
   return (await response.json()).guilds || [];
 }
 
 export async function logoutFromDiscord() {
-  await fetch(`${NYXECLIPSE_API}/api/auth/logout`, { method:'POST', credentials:'include' }).catch(()=>{});
+  const session = getStoredSession();
+  await fetch(`${NYXECLIPSE_API}/api/auth/logout`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: session?.sessionToken ? { Authorization: `Bearer ${session.sessionToken}` } : {},
+  }).catch(() => {});
   clearSession();
 }
 
