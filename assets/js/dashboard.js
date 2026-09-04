@@ -1,9 +1,23 @@
 import { dashboardApi, getSelectedGuildId } from './dashboardApi.js';
-import { getStoredSession, loginWithDiscord } from './DiscordOAuth.js';
+import { getStoredSession, loginWithDiscord, handleOAuthCallback } from './DiscordOAuth.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const hero = document.querySelector('.hero');
-  const session = getStoredSession();
+  let session = getStoredSession();
+
+  // The Cloudflare Workers root is the OAuth callback. Process Discord's
+  // one-time authorization code before attempting any dashboard API calls.
+  try {
+    const callbackSession = await handleOAuthCallback();
+    if (callbackSession) session = callbackSession;
+  } catch (error) {
+    const panel = document.createElement('section');
+    panel.className = 'fade-in';
+    panel.innerHTML = `<div class="card"><h3>Discord connection failed</h3><p>${escapeHtml(error.message || 'Unable to complete Discord authentication.')}</p></div>`;
+    document.querySelector('main')?.appendChild(panel);
+    return;
+  }
+
   if (!session?.sessionToken) {
     const button = document.getElementById('dashboard-connect');
     button?.addEventListener('click', loginWithDiscord);
