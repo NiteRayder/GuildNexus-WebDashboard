@@ -10,104 +10,54 @@
 }
 
 :root {
-
-    /* Colors */
-
     --bg-primary: #000000;
     --bg-secondary: #0a0a0a;
     --bg-card: #111111;
     --bg-card-hover: #181818;
-
     --border-color: #252525;
-
     --accent: #9b5cff;
     --accent-hover: #b47cff;
     --accent-light: #c99cff;
-
     --text-primary: #ffffff;
     --text-secondary: #b5b5b5;
     --text-muted: #707070;
-
-    /* Effects */
-
-    --shadow:
-        0 10px 30px rgba(0,0,0,.45);
-
-    --glow:
-        0 0 30px rgba(155,92,255,.18);
-
-    --transition:
-        0.25s ease;
+    --shadow: 0 10px 30px rgba(0,0,0,.45);
+    --glow: 0 0 30px rgba(155,92,255,.18);
+    --transition: 0.25s ease;
 }
-
-/* =========================
-   Body
-========================= */
 
 body {
     background: var(--bg-primary);
     color: var(--text-primary);
-
-    font-family:
-        "Segoe UI",
-        "Inter",
-        sans-serif;
-
+    font-family: "Segoe UI", "Inter", sans-serif;
     min-height: 100vh;
-
     overflow-x: hidden;
-
     position: relative;
 }
 
-/* Background Grid */
-
 body::before {
-
     content: "";
-
     position: fixed;
-
     inset: 0;
-
     background-image:
-        linear-gradient(
-            rgba(255,255,255,.03) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            90deg,
-            rgba(255,255,255,.03) 1px,
-            transparent 1px
-        );
-
+        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
     background-size: 50px 50px;
-
     z-index: -5;
 }
 
-/* =========================
-   Floating Orbs
-========================= */
-
 .orb {
     position: fixed;
-
     border-radius: 50%;
-
     filter: blur(120px);
-
     z-index: -4;
-
     animation: float 20s infinite ease-in-out;
 }
 
 .orb1 {
     width: 400px;
     height: 400px;
-
     background: rgba(155,92,255,.15);
-
     top: 10%;
     left: -100px;
 }
@@ -115,105 +65,53 @@ body::before {
 .orb2 {
     width: 500px;
     height: 500px;
-
     background: rgba(120,80,255,.12);
-
     bottom: -100px;
     right: -100px;
-
     animation-delay: -10s;
 }
 
 @keyframes float {
-
-    0%,100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-60px);
-    }
-
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-60px); }
 }
 
-/* =========================
-   Cursor Glow
-========================= */
-
 #cursor-glow {
-
     position: fixed;
-
     width: 500px;
     height: 500px;
-
     border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(155,92,255,.15),
-            transparent 70%
-        );
-
+    background: radial-gradient(circle, rgba(155,92,255,.15), transparent 70%);
     pointer-events: none;
-
     transform: translate(-50%, -50%);
-
     z-index: -3;
 }
 
-/* =========================
-   Header
-========================= */
-
 header {
-
     position: sticky;
     top: 0;
-
     z-index: 1000;
-
-    background:
-        rgba(0,0,0,.75);
-
+    background: rgba(0,0,0,.75);
     backdrop-filter: blur(20px);
-
-    border-bottom:
-        1px solid var(--border-color);
-
+    border-bottom: 1px solid var(--border-color);
     padding: 20px 40px;
 }
 
 .header-container {
-
     max-width: 1400px;
-
     margin: auto;
-
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
 }
 
 .logo {
-
     font-size: 1.8rem;
-
     font-weight: 700;
-
     letter-spacing: 1px;
 }
 
-.logo span {
-    color: var(--accent);
-}
-
-/* =========================
-   Navigation
-========================= */
+.logo span { color: var(--accent); }
 
 nav {
     display: flex;
@@ -221,91 +119,54 @@ nav {
 }
 
 nav a {
-
     color: var(--text-secondary);
-
     text-decoration: none;
-
     font-weight: 600;
-
     transition: var(--transition);
-
     position: relative;
 }
 
-nav a:hover {
-    color: var(--text-primary);
-}
+nav a:hover { color: var(--text-primary); }
 
 nav a::after {
-
     content: "";
-
     position: absolute;
-
     width: 0;
     height: 2px;
-
     left: 0;
     bottom: -5px;
-
     background: var(--accent);
-
     transition: .3s;
 }
 
-nav a:hover::after {
-    width: 100%;
-}
-
-/* =========================
-   Main
-========================= */
+nav a:hover::after { width: 100%; }
 
 main {
-
     max-width: 1400px;
-
     margin: auto;
-
     padding: 80px 40px;
 }
 
-/* =========================
-   Typography
-========================= */
-
 h1 {
-
     font-size: 4rem;
-
     line-height: 1.1;
-
     margin-bottom: 20px;
 }
 
 h2 {
-
     font-size: 2.5rem;
-
     margin-bottom: 30px;
 }
 
 h3 {
-
     color: var(--accent);
-
     margin-bottom: 15px;
 }
 
 p {
-
     color: var(--text-secondary);
-
     line-height: 1.8;
-
     font-size: 1.05rem;
-
     margin-bottom: 20px;
 }
 
@@ -315,113 +176,62 @@ ul {
     padding-left: 20px;
 }
 
-/* =========================
-   Hero
-========================= */
-
 .hero {
-
     text-align: center;
-
     padding: 120px 20px;
 }
 
-.hero.hero-compact {
-    padding: 60px 20px;
-}
+.hero.hero-compact { padding: 60px 20px; }
 
 .hero h1 {
-
-    background:
-        linear-gradient(
-            90deg,
-            white,
-            var(--accent-light)
-        );
-
+    background: linear-gradient(90deg, white, var(--accent-light));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
 .hero p {
-
     max-width: 800px;
-
     margin: auto;
-
     font-size: 1.3rem;
 }
 
-/* =========================
-   Buttons
-========================= */
-
 .button,
 button {
-
     position: relative;
-
     overflow: hidden;
-
     display: inline-block;
-
     background: var(--accent);
-
     color: white;
-
     text-decoration: none;
-
     border: none;
-
     padding: 14px 32px;
-
     border-radius: 14px;
-
     font-weight: 600;
-
     cursor: pointer;
-
     transition: var(--transition);
 }
 
 .button:hover,
 button:hover {
-
     background: var(--accent-hover);
-
     transform: translateY(-2px);
-
     box-shadow: var(--glow);
 }
 
 .button::before,
 button::before {
-
     content: "";
-
     position: absolute;
-
     top: 0;
     left: -100%;
-
     width: 100%;
     height: 100%;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(255,255,255,.25),
-            transparent
-        );
-
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
     transition: .6s;
 }
 
 .button:hover::before,
-button:hover::before {
-    left: 100%;
-}
+button:hover::before { left: 100%; }
 
 .button.btn-small,
 button.btn-small {
@@ -437,72 +247,36 @@ button.btn-outline {
 }
 
 .button.btn-outline:hover,
-button.btn-outline:hover {
-    background: rgba(155, 92, 255, 0.1);
-}
-
-/* =========================
-   Cards
-========================= */
+button.btn-outline:hover { background: rgba(155,92,255,0.1); }
 
 .cards {
-
     display: grid;
-
-    grid-template-columns:
-        repeat(auto-fit, minmax(320px, 1fr));
-
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 30px;
 }
 
 .card {
-
     background: var(--bg-card);
-
-    border:
-        1px solid var(--border-color);
-
+    border: 1px solid var(--border-color);
     border-radius: 24px;
-
     padding: 35px;
-
     transition: var(--transition);
-
     box-shadow: var(--shadow);
 }
 
 .card:hover {
-
-    transform:
-        translateY(-8px);
-
-    background:
-        var(--bg-card-hover);
-
-    border-color:
-        var(--accent);
-
-    box-shadow:
-        var(--shadow),
-        var(--glow);
+    transform: translateY(-8px);
+    background: var(--bg-card-hover);
+    border-color: var(--accent);
+    box-shadow: var(--shadow), var(--glow);
 }
 
-/* =========================
-   Status Badges
-========================= */
-
 .status {
-
     display: inline-block;
-
     padding: 6px 14px;
-
     border-radius: 999px;
-
     font-size: .85rem;
-
     font-weight: 600;
-
     margin-bottom: 15px;
 }
 
@@ -526,137 +300,69 @@ button.btn-outline:hover {
     color: #b0b0b0;
 }
 
-/* =========================
-   Sections
-========================= */
-
-section {
-    margin-bottom: 100px;
-}
-
-/* =========================
-   Contact Form
-========================= */
+section { margin-bottom: 100px; }
 
 .contact-section {
-
     max-width: 800px;
-
     margin: auto;
 }
 
 .contact-form {
-
     display: flex;
-
     flex-direction: column;
-
     gap: 20px;
 }
 
 .contact-form label {
-
     font-weight: 600;
-
     color: var(--text-primary);
 }
 
 .contact-form input,
 .contact-form textarea {
-
     background: var(--bg-card);
-
-    border:
-        1px solid var(--border-color);
-
+    border: 1px solid var(--border-color);
     border-radius: 14px;
-
     padding: 16px;
-
     color: white;
-
     font-size: 1rem;
 }
 
 .contact-form input:focus,
 .contact-form textarea:focus {
-
     outline: none;
-
-    border-color:
-        var(--accent);
-
-    box-shadow:
-        0 0 15px rgba(155,92,255,.2);
+    border-color: var(--accent);
+    box-shadow: 0 0 15px rgba(155,92,255,.2);
 }
-
-/* =========================
-   Footer
-========================= */
 
 footer {
-
     text-align: center;
-
     padding: 40px;
-
-    border-top:
-        1px solid var(--border-color);
-
-    color:
-        var(--text-muted);
+    border-top: 1px solid var(--border-color);
+    color: var(--text-muted);
 }
 
-/* =========================
-   Scroll Animations
-========================= */
-
 .fade-in {
-
     opacity: 0;
-
-    transform:
-        translateY(40px);
-
-    transition:
-        opacity .8s ease,
-        transform .8s ease;
+    transform: translateY(40px);
+    transition: opacity .8s ease, transform .8s ease;
 }
 
 .fade-in.show {
-
     opacity: 1;
-
-    transform:
-        translateY(0);
+    transform: translateY(0);
 }
-
-/* =========================
-   Loader
-========================= */
 
 #loader {
-
     position: fixed;
-
     inset: 0;
-
     background: black;
-
     display: flex;
-
     justify-content: center;
-
     align-items: center;
-
     z-index: 9999;
-
     transition: opacity .8s ease;
 }
-
-/* =========================
-   Utility Classes
-========================= */
 
 .flex-center {
     display: flex;
@@ -666,13 +372,7 @@ footer {
     flex-wrap: wrap;
 }
 
-.mt-30 {
-    margin-top: 30px;
-}
-
-/* =========================
-   Moderation toggle controls
-========================= */
+.mt-30 { margin-top: 30px; }
 
 .toggle-switch {
     position: relative;
@@ -709,13 +409,8 @@ footer {
     border-radius: 50%;
 }
 
-input:checked + .slider {
-    background-color: var(--accent);
-}
-
-input:checked + .slider:before {
-    transform: translateX(20px);
-}
+input:checked + .slider { background-color: var(--accent); }
+input:checked + .slider:before { transform: translateX(20px); }
 
 .status.paused {
     background: rgba(255,77,77,.15);
@@ -723,63 +418,34 @@ input:checked + .slider:before {
     border: 1px solid rgba(255,77,77,.3);
 }
 
-/* =========================
-   Page transition and reveal system
-========================= */
+html { scroll-behavior: smooth; }
 
-html {
-    scroll-behavior: smooth;
-}
-
+/* Reveal animation. The script adds .reveal and .show. */
 .reveal {
     opacity: 0;
     transform: translateY(18px);
     transition: opacity .55s ease var(--reveal-delay, 0ms), transform .55s cubic-bezier(.2, .7, .2, 1) var(--reveal-delay, 0ms);
 }
 
-.reveal.visible {
+.reveal.show {
     opacity: 1;
     transform: translateY(0);
 }
 
-/* =========================
-   Mobile
-========================= */
-
 @media (max-width: 900px) {
-
     .header-container {
-
         flex-direction: column;
-
         gap: 20px;
     }
 
     nav {
-
         flex-wrap: wrap;
-
         justify-content: center;
     }
 
-    h1 {
-        font-size: 2.8rem;
-    }
-
-    h2 {
-        font-size: 2rem;
-    }
-
-    .hero {
-        padding: 80px 20px;
-    }
-
-    main {
-        padding: 60px 20px;
-    }
-
-    .cards {
-        grid-template-columns: 1fr;
-    }
-
+    h1 { font-size: 2.8rem; }
+    h2 { font-size: 2rem; }
+    .hero { padding: 80px 20px; }
+    main { padding: 60px 20px; }
+    .cards { grid-template-columns: 1fr; }
 }
