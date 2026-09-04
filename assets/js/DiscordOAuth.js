@@ -1,6 +1,8 @@
 const NYXECLIPSE_API = 'https://nyxeclipse.apps.bot-hosting.cloud';
 const DISCORD_CLIENT_ID = '1528261975438524517';
-const DASHBOARD_REDIRECT_URI = 'https://niterayder.github.io/GuildNexus-WebDashboard/pages/invite.html';
+// GuildNexus is now served from Cloudflare Workers. Discord must return the
+// authorization code to the public dashboard origin, never the GitHub Pages URL.
+const DASHBOARD_REDIRECT_URI = 'https://guildnexus.brittanyburwell19.workers.dev/';
 const SESSION_KEY = 'guildnexus_discord_session';
 
 // User authorization for the dashboard. This MUST NOT include the `bot` scope
