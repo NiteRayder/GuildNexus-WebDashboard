@@ -3,6 +3,7 @@ const DISCORD_CLIENT_ID = '1528261975438524517';
 // GuildNexus is now served from Cloudflare Workers. Discord must return the
 // authorization code to the public dashboard origin, never the GitHub Pages URL.
 const DASHBOARD_REDIRECT_URI = 'https://guildnexus.brittanyburwell19.workers.dev/';
+const BOT_INSTALL_REDIRECT_URI = 'https://guildnexus.brittanyburwell19.workers.dev/pages/invite';
 const SESSION_KEY = 'guildnexus_discord_session';
 
 // User authorization for the dashboard. This MUST NOT include the `bot` scope
@@ -120,13 +121,17 @@ export async function logoutFromDiscord() {
   clearSession();
 }
 
-// Bot installation only. This MUST NOT use the dashboard's user OAuth scopes,
-// response_type, or redirect URI.
+// Bot installation flow. This is intentionally separate from dashboard user
+// authentication. It requests the bot and slash-command scopes plus the
+// Administrator permission, then returns through the invite page callback.
 export function getBotInviteUrl() {
   const params = new URLSearchParams({
     client_id: DISCORD_CLIENT_ID,
     permissions: '8',
-    scope: 'bot applications.commands',
+    response_type: 'code',
+    redirect_uri: BOT_INSTALL_REDIRECT_URI,
+    integration_type: '0',
+    scope: 'applications.commands bot',
   });
   return `https://discord.com/oauth2/authorize?${params.toString()}`;
 }
