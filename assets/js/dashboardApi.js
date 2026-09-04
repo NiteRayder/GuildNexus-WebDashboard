@@ -1,10 +1,10 @@
-import { getStoredSession } from './DiscordOAuth.js';
-
-export const NYXECLIPSE_API = 'https://api.example.com/guildnexus';
+import { getStoredSession, NYXECLIPSE_API } from './DiscordOAuth.js';
 
 async function request(path, options = {}) {
   const session = getStoredSession();
-  if (!session?.authenticated) throw new Error('Connect Discord before using GuildNexus.');
+  if (!session?.authenticated || !session?.sessionToken) {
+    throw new Error('Connect Discord before using GuildNexus.');
+  }
 
   const response = await fetch(`${NYXECLIPSE_API}${path}`, {
     ...options,
@@ -12,7 +12,7 @@ async function request(path, options = {}) {
       Accept: 'application/json',
       ...(options.body ? { 'Content-Type': 'application/json' } : {}),
       ...(options.headers || {}),
-      ...(session?.sessionToken ? { Authorization: `Bearer ${session.sessionToken}` } : {}),
+      Authorization: `Bearer ${session.sessionToken}`,
     },
     credentials: 'include',
   });
