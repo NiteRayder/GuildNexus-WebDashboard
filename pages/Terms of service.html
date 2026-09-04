@@ -3,8 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NyxEclipse — Terms of Service & Privacy Policy</title>
+    <title>NyxEclipse — Terms & Policy</title>
     <link rel="stylesheet" href="../style.css">
+    <style>
+        .policy-tabs {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 0 0 28px;
+            padding: 6px;
+            background: rgba(255,255,255,.04);
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 14px;
+        }
+        .policy-tab {
+            appearance: none;
+            border: 1px solid transparent;
+            background: transparent;
+            color: #b9b9c2;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+        .policy-tab:hover {
+            color: #fff;
+            background: rgba(255,255,255,.06);
+        }
+        .policy-tab.active {
+            color: #fff;
+            background: linear-gradient(135deg, #7c2cff, #5d20c9);
+            border-color: rgba(255,255,255,.12);
+            box-shadow: 0 8px 24px rgba(92,32,201,.25);
+        }
+        .policy-panel {
+            display: none;
+        }
+        .policy-panel.active {
+            display: block;
+            animation: policyFade .2s ease;
+        }
+        @keyframes policyFade {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
 
@@ -12,24 +57,24 @@
     <div class="orb orb2"></div>
     <div id="cursor-glow"></div>
 
- <header>
-    <div class="header-container">
-        <div class="logo">Nyx<span>Eclipse</span></div>
-        <nav>
-            <a href="../index.html">Dashboard</a>
-            <a href="about.html">About</a>
-            <a href="invite.html">Invite</a>
-            <a href="servers.html">Servers</a>
-            <a href="integrations.html">Integrations</a>
-            <a href="moderation.html">Moderation</a>
-            <a href="automation.html">Automation</a>
-            <a href="AIassistant.html">AI Assistant</a>
-            <a href="Terms%20of%20service.html">Terms & Policy</a>
-            <a href="contact.html">Contact Us</a>
-            <a href="settings.html">Settings</a>
-        </nav>
-    </div>
-</header>
+    <header>
+        <div class="header-container">
+            <div class="logo">Nyx<span>Eclipse</span></div>
+            <nav>
+                <a href="../index.html">Dashboard</a>
+                <a href="about.html">About</a>
+                <a href="invite.html">Invite</a>
+                <a href="servers.html">Servers</a>
+                <a href="integrations.html">Integrations</a>
+                <a href="moderation.html">Moderation</a>
+                <a href="automation.html">Automation</a>
+                <a href="AIassistant.html">AI Assistant</a>
+                <a href="Terms%20of%20service.html" aria-current="page">Terms & Policy</a>
+                <a href="contact.html">Contact Us</a>
+                <a href="settings.html">Settings</a>
+            </nav>
+        </div>
+    </header>
 
     <main>
         <section class="hero hero-compact fade-in">
@@ -38,55 +83,100 @@
         </section>
 
         <section class="fade-in">
-            <div class="card mb-25">
-                <h3>1. Introduction</h3>
-                <p>These Terms of Service (“Terms”) govern your use of NyxEclipse, a Discord bot developed and maintained by NyxNexus Development. By adding, using, or interacting with NyxEclipse, you agree to these Terms and the Privacy Policy contained herein. If you do not agree, you must remove the bot from your server and discontinue use.</p>
+            <div class="policy-tabs" role="tablist" aria-label="Legal documents">
+                <button class="policy-tab active" id="terms-tab" type="button" role="tab" aria-selected="true" aria-controls="terms-panel" data-policy="terms">Terms of Service</button>
+                <button class="policy-tab" id="privacy-tab" type="button" role="tab" aria-selected="false" aria-controls="privacy-panel" data-policy="privacy">Privacy Policy</button>
             </div>
 
-            <div class="card mb-25">
-                <h3>2. Eligibility & Requirements</h3>
-                <p>To use NyxEclipse, you must:</p>
-                <ul>
-                    <li>Be at least 13 years old (Discord's minimum age requirement).</li>
-                    <li>Follow all Discord Terms of Service and Community Guidelines.</li>
-                    <li>Have the necessary permissions ("Manage Server" or Administrator) to add bots to a server.</li>
-                </ul>
+            <div id="terms-panel" class="policy-panel active" role="tabpanel" aria-labelledby="terms-tab" data-panel="terms">
+                <div class="card mb-25">
+                    <h3>1. Introduction</h3>
+                    <p>These Terms of Service (“Terms”) govern your use of NyxEclipse, a Discord bot developed and maintained by NyxNexus Development. By adding, using, or interacting with NyxEclipse, you agree to these Terms. If you do not agree, you must remove the bot from your server and discontinue use.</p>
+                </div>
+
+                <div class="card mb-25">
+                    <h3>2. Eligibility & Requirements</h3>
+                    <p>To use NyxEclipse, you must:</p>
+                    <ul>
+                        <li>Be at least 13 years old, or meet the minimum age required by Discord in your country.</li>
+                        <li>Follow all Discord Terms of Service and Community Guidelines.</li>
+                        <li>Have the necessary permissions (such as “Manage Server” or Administrator) to add and configure bots in a server.</li>
+                    </ul>
+                </div>
+
+                <div class="card mb-25">
+                    <h3>3. AI-Powered Features</h3>
+                    <p>NyxEclipse may include AI-driven systems for moderation, content generation, and automated decision-making.</p>
+                    <ul>
+                        <li><strong>Accuracy:</strong> AI outputs may be imperfect, incomplete, or incorrect.</li>
+                        <li><strong>Staff Overrides:</strong> Automated moderation decisions can be reviewed or overridden by authorized server staff.</li>
+                        <li><strong>No Professional Advice:</strong> AI features should not be treated as professional legal, medical, financial, or other professional advice.</li>
+                    </ul>
+                </div>
+
+                <div class="card mb-25">
+                    <h3>4. User Responsibilities & Prohibitions</h3>
+                    <p>You agree to use NyxEclipse in compliance with Discord’s rules and applicable laws. You may not use NyxEclipse to automate spam or raids, collect data unlawfully, circumvent Discord moderation or safety systems, or generate harmful content.</p>
+                </div>
+
+                <div class="card mb-25">
+                    <h3>5. Service Availability & Changes</h3>
+                    <p>NyxEclipse is provided on an ongoing development basis. Features may be added, removed, modified, temporarily disabled, or discontinued. Availability is not guaranteed, and maintenance or outages may occur.</p>
+                    <p>NyxNexus Development may update these Terms when the service changes. Continued use of NyxEclipse after an updated effective date constitutes acceptance of the revised Terms.</p>
+                </div>
+
+                <div class="card mb-25">
+                    <h3>6. Contact Information</h3>
+                    <p>For questions or support regarding NyxEclipse:</p>
+                    <p><strong>Email:</strong> discord.stiffen730@passinbox.com<br>
+                    <strong>Discord:</strong> NyxNexus Development</p>
+                    <a href="contact.html" class="button mt-30">Contact Support</a>
+                </div>
             </div>
 
-            <div class="card mb-25">
-                <h3>3. AI-Powered Features</h3>
-                <p>NyxEclipse includes AI-driven systems for moderation, content generation, and automated decision-making.</p>
-                <ul>
-                    <li><strong>Accuracy:</strong> AI outputs may be imperfect, incomplete, or incorrect.</li>
-                    <li><strong>Staff Overrides:</strong> AI moderation decisions may be automated but can be overridden by server staff.</li>
-                    <li><strong>No Professional Advice:</strong> AI features should not be treated as professional advice (legal, medical, financial, etc.).</li>
-                </ul>
-            </div>
+            <div id="privacy-panel" class="policy-panel" role="tabpanel" aria-labelledby="privacy-tab" data-panel="privacy">
+                <div class="card mb-25">
+                    <h3>1. Privacy Overview</h3>
+                    <p>This Privacy Policy explains what information NyxEclipse may process, why it is used, and how users can request deletion of stored data. NyxEclipse is a Discord bot developed and maintained by NyxNexus Development.</p>
+                </div>
 
-            <div class="card mb-25">
-                <h3>4. User Responsibilities & Prohibitions</h3>
-                <p>You agree to use NyxEclipse in compliance with Discord's rules and applicable laws. You may not use NyxEclipse to automate spam or raids, collect data unlawfully, circumvent Discord moderation, or generate harmful content.</p>
-            </div>
+                <div class="card mb-25">
+                    <h3>2. Information We Collect</h3>
+                    <ul>
+                        <li><strong>Identification Data:</strong> User IDs, Server (Guild) IDs, and Channel IDs required to operate Discord features.</li>
+                        <li><strong>Configuration:</strong> Server-specific configurations, feature settings, permissions, and related preferences.</li>
+                        <li><strong>Logs:</strong> Command execution metrics, application errors, audit information, and moderation event history where required for bot functionality.</li>
+                        <li><strong>Moderation Data:</strong> Information necessary to maintain moderation cases and related server-management features.</li>
+                    </ul>
+                </div>
 
-            <div class="card mb-25">
-                <h3>5. Integrated Privacy Policy & Data Handling</h3>
-                <h4 class="subheading">Information Collected</h4>
-                <ul>
-                    <li><strong>Identification Data:</strong> User IDs, Server (Guild) IDs, and Channel IDs.</li>
-                    <li><strong>Configuration:</strong> Server-specific configurations, prefix preferences, and feature toggles.</li>
-                    <li><strong>Logs:</strong> Command execution metrics, error logs, and moderation event history.</li>
-                    <li><strong>Message Content:</strong> NyxEclipse does not store raw message content. Messages processed for AI features are held ephemerally in memory during execution and deleted immediately.</li>
-                </ul>
-                <h4 class="subheading">Data Deletion Requests</h4>
-                <p>Server owners or users can request deletion of stored data associated with their Server ID or User ID by contacting support.</p>
-            </div>
+                <div class="card mb-25">
+                    <h3>3. Message Content</h3>
+                    <p>NyxEclipse does not intentionally maintain a permanent archive of raw Discord message content for ordinary bot operation. Where messages must be processed for a requested feature, such as an AI-powered function, they may be processed temporarily and are not retained longer than necessary for that operation.</p>
+                </div>
 
-            <div class="card mb-25">
-                <h3>6. Contact Information</h3>
-                <p>For questions, support, or data deletion requests regarding NyxEclipse:</p>
-                <p><strong>Email:</strong> discord.stiffen730@passinbox.com<br>
-                <strong>Discord:</strong> NyxNexus Development</p>
-                <a href="contact.html" class="button mt-30">Contact Support</a>
+                <div class="card mb-25">
+                    <h3>4. How Information Is Used</h3>
+                    <p>Information may be used to provide bot features, maintain server configurations, perform moderation and leveling functions, generate requested dashboard data, diagnose errors, maintain security, and improve service reliability.</p>
+                </div>
+
+                <div class="card mb-25">
+                    <h3>5. Discord OAuth & Dashboard Authentication</h3>
+                    <p>When you connect GuildNexus to Discord, Discord may provide account and authorization information required to authenticate you and determine which servers you can manage. OAuth credentials and bot credentials should remain on the server-side application and are not intended to be exposed to the dashboard frontend.</p>
+                </div>
+
+                <div class="card mb-25">
+                    <h3>6. Data Deletion Requests</h3>
+                    <p>Server owners or users can request deletion of stored data associated with their Server ID or User ID by contacting support. Requests may require enough information to identify the relevant data without unnecessarily collecting additional personal information.</p>
+                </div>
+
+                <div class="card mb-25">
+                    <h3>7. Contact Information</h3>
+                    <p>For privacy questions or data deletion requests:</p>
+                    <p><strong>Email:</strong> discord.stiffen730@passinbox.com<br>
+                    <strong>Discord:</strong> NyxNexus Development</p>
+                    <a href="contact.html" class="button mt-30">Contact Support</a>
+                </div>
             </div>
         </section>
     </main>
@@ -98,5 +188,50 @@
     <script src="../assets/js/animations.js"></script>
     <script src="../assets/js/cursor-glow.js"></script>
     <script src="../assets/js/loading.js"></script>
+    <script>
+        (() => {
+            const tabs = document.querySelectorAll('.policy-tab');
+            const panels = document.querySelectorAll('.policy-panel');
+
+            function activatePolicy(policy, updateHash = true) {
+                const validPolicy = policy === 'privacy' ? 'privacy' : 'terms';
+
+                tabs.forEach(tab => {
+                    const active = tab.dataset.policy === validPolicy;
+                    tab.classList.toggle('active', active);
+                    tab.setAttribute('aria-selected', String(active));
+                });
+
+                panels.forEach(panel => {
+                    panel.classList.toggle('active', panel.dataset.panel === validPolicy);
+                });
+
+                if (updateHash) {
+                    history.replaceState(null, '', `#${validPolicy}`);
+                }
+            }
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => activatePolicy(tab.dataset.policy));
+                tab.addEventListener('keydown', event => {
+                    if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+                        event.preventDefault();
+                        const tabArray = Array.from(tabs);
+                        const current = tabArray.indexOf(tab);
+                        const next = event.key === 'ArrowRight'
+                            ? (current + 1) % tabArray.length
+                            : (current - 1 + tabArray.length) % tabArray.length;
+                        tabArray[next].focus();
+                        activatePolicy(tabArray[next].dataset.policy);
+                    }
+                });
+            });
+
+            const initialPolicy = window.location.hash.slice(1).toLowerCase();
+            if (initialPolicy === 'privacy' || initialPolicy === 'terms') {
+                activatePolicy(initialPolicy, false);
+            }
+        })();
+    </script>
 </body>
 </html>
