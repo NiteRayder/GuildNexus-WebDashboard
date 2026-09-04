@@ -1,14 +1,19 @@
 const NYXECLIPSE_API = 'https://api.example.com/guildnexus';
+const DISCORD_CLIENT_ID = '1528261975438524517';
+const DASHBOARD_REDIRECT_URI = 'https://niterayder.github.io/GuildNexus-WebDashboard/pages/invite.html';
 const SESSION_KEY = 'guildnexus_discord_session';
 
+// User authorization for the dashboard. This MUST NOT include the `bot` scope
+// or bot permissions, otherwise Discord treats the flow as a bot installation.
 export async function loginWithDiscord() {
-  const redirectUri = 'https://niterayder.github.io/GuildNexus-WebDashboard/pages/invite.html';
-  const clientId = '1528261975438524517';
-  const permissions = '8';
-  const scope = 'guilds+messages.read+guilds.join+bot+guilds.members.read+applications.commands';
-  
-  const authUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&permissions=${permissions}&response_type=code&redirect_uri=${encodeURIComponent(redirectUri)}&integration_type=0&scope=${scope}`;
-  window.location.assign(authUrl);
+  const params = new URLSearchParams({
+    client_id: DISCORD_CLIENT_ID,
+    response_type: 'code',
+    redirect_uri: DASHBOARD_REDIRECT_URI,
+    scope: 'identify guilds',
+  });
+
+  window.location.assign(`https://discord.com/oauth2/authorize?${params.toString()}`);
 }
 
 export function getStoredSession() {
@@ -58,13 +63,15 @@ export async function logoutFromDiscord() {
   clearSession();
 }
 
+// Bot installation only. This MUST NOT use the dashboard's user OAuth scopes,
+// response_type, or redirect URI.
 export function getBotInviteUrl() {
   const params = new URLSearchParams({
-    client_id: '1528261975438524517',
+    client_id: DISCORD_CLIENT_ID,
     permissions: '8',
-    scope: 'guilds messages.read guilds.join bot guilds.members.read applications.commands',
+    scope: 'bot applications.commands',
   });
-  return `https://discord.com/oauth2/authorize?client_id=1528261975438524517&permissions=8&response_type=code&redirect_uri=https%3A%2F%2Fniterayder.github.io%2FGuildNexus-WebDashboard%2Fpages%2Finvite.html&integration_type=0&scope=guilds+messages.read+guilds.join+bot+guilds.members.read+applications.commands`;
+  return `https://discord.com/oauth2/authorize?${params.toString()}`;
 }
 
 export { NYXECLIPSE_API };
