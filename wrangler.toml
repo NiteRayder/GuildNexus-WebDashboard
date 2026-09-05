@@ -2,6 +2,10 @@ name = "guildnexus"
 main = "cloudflare-worker/index.js"
 compatibility_date = "2026-09-04"
 
+[vars]
+NYXECLIPSE_ORIGIN = "http://fi15.bot-hosting.net:26116"
+DASHBOARD_ORIGIN = "https://guildnexus.brittanyburwell19.workers.dev"
+
 [assets]
 directory = "."
 binding = "ASSETS"
