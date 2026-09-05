@@ -1,11 +1,11 @@
 const NYXECLIPSE_API='https://guildnexus.brittanyburwell19.workers.dev';
 const DISCORD_CLIENT_ID='1528261975438524517';
-const DASHBOARD_REDIRECT_URI='https://guildnexus.brittanyburwell19.workers.dev/';
+const DASHBOARD_REDIRECT_URI='https://guildnexus.brittanyburwell19.workers.dev/api/auth/discord/callback';
 const SESSION_KEY='guildnexus_discord_session';
 
 // Authentication is initiated through the public GuildNexus HTTPS endpoint.
 // The Cloudflare Worker proxies /api/* to NyxEclypse, while Discord redirects
-// the authorization code back to this dashboard origin.
+// the authorization code to the dedicated server-side OAuth callback.
 export function loginWithDiscord(){ window.location.assign(`${NYXECLIPSE_API}/api/auth/discord`); }
 export function getStoredSession(){try{return JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch{localStorage.removeItem(SESSION_KEY);return null}}
 export function clearSession(){localStorage.removeItem(SESSION_KEY)}
@@ -14,10 +14,9 @@ export async function handleOAuthCallback(){
   const url=new URL(window.location.href), code=url.searchParams.get('code'), error=url.searchParams.get('error');
   if(error)throw new Error(`Discord authorization was not completed (${error}).`);
 
-  // Discord redirects to the dashboard origin with ?code=...&state=....
-  // Send that code to the server-side callback through the same public HTTPS
-  // Worker. The server exchanges the code using the private client secret and
-  // redirects to the invite page with the short-lived session in the fragment.
+  // The preferred flow sends Discord directly to the server-side callback.
+  // This legacy browser-side code forwarding remains for compatibility with
+  // older callback redirects and will forward an authorization code safely.
   if(code){
     const state=url.searchParams.get('state')||'';
     const callbackUrl=`${NYXECLIPSE_API}/api/auth/discord/callback?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}`;
