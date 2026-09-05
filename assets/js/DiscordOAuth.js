@@ -15,35 +15,23 @@ export async function handleOAuthCallback(){
   if(error)throw new Error(`Discord authorization was not completed (${error}).`);
 
   // Discord redirects to the dashboard origin with ?code=...&state=....
-  // The authorization code is exchanged server-side by NyxEclypse through the
-  // same-origin Worker API, so the client never handles the OAuth secret.
+  // Send that code to the server-side callback through the same public HTTPS
+  // Worker. The server exchanges the code using the private client secret and
+  // redirects to the invite page with the short-lived session in the fragment.
   if(code){
     const state=url.searchParams.get('state')||'';
     const callbackUrl=`${NYXECLIPSE_API}/api/auth/discord/callback?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}`;
-    const response=await fetch(callbackUrl,{credentials:'include',redirect:'manual',headers:{Accept:'application/json'}});
+    window.location.assign(callbackUrl);
+    return null;
+  }
 
-    // NyxEclypse normally returns a redirect containing the session in the
-    // fragment. Fragments are not sent over HTTP, so read the redirect locally.
-    const location=response.headers.get('Location');
-    if(location){
-      const redirect=new URL(location,window.location.origin);
-      const fragmentSession=new URLSearchParams(redirect.hash.replace(/^#/,'')).get('session');
-      if(fragmentSession){
-        localStorage.setItem(SESSION_KEY,JSON.stringify({sessionToken:fragmentSession,authenticated:true}));
-      }
-    }else{
-      let data=null;
-      try{data=await response.json()}catch{}
-      if(!response.ok)throw new Error(data?.error||'Discord authorization could not be completed.');
-      if(data?.session){
-        localStorage.setItem(SESSION_KEY,JSON.stringify({sessionToken:data.session,authenticated:true,user:data.user||null}));
-      }
-    }
-
-    if(response.type!=='opaqueredirect' && !response.ok && response.status!==302 && response.status!==303){
-      throw new Error('Discord authorization could not be completed.');
-    }
-    url.searchParams.delete('code');url.searchParams.delete('state');history.replaceState(null,document.title,url.pathname+url.search);
+  // The callback endpoint places the session identifier in the URL fragment.
+  // Fragments never reach the server, so the browser can safely persist it.
+  const hash=new URLSearchParams(url.hash.replace(/^#/,'')||'');
+  const fragmentSession=hash.get('session');
+  if(fragmentSession){
+    localStorage.setItem(SESSION_KEY,JSON.stringify({sessionToken:fragmentSession,authenticated:true}));
+    url.hash='';history.replaceState(null,document.title,url.pathname+url.search);
   }
 
   const stored=getStoredSession();
