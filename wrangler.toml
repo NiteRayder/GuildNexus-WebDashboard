@@ -1,0 +1,7 @@
+name = "guildnexus"
+main = "cloudflare-worker/index.js"
+compatibility_date = "2026-09-04"
+
+[assets]
+directory = "."
+binding = "ASSETS"
