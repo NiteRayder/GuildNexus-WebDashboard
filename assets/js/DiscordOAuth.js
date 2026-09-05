@@ -19,15 +19,29 @@ export async function handleOAuthCallback(){
   // same-origin Worker API, so the client never handles the OAuth secret.
   if(code){
     const state=url.searchParams.get('state')||'';
-    const response=await fetch(`${NYXECLIPSE_API}/api/auth/discord/callback?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}`,{
-      credentials:'include',
-      headers:{Accept:'application/json'}
-    });
-    let data=null;
-    try{data=await response.json()}catch{}
-    if(!response.ok)throw new Error(data?.error||'Discord authorization could not be completed.');
-    if(data?.session){
-      localStorage.setItem(SESSION_KEY,JSON.stringify({sessionToken:data.session,authenticated:true,user:data.user||null}));
+    const callbackUrl=`${NYXECLIPSE_API}/api/auth/discord/callback?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}`;
+    const response=await fetch(callbackUrl,{credentials:'include',redirect:'manual',headers:{Accept:'application/json'}});
+
+    // NyxEclypse normally returns a redirect containing the session in the
+    // fragment. Fragments are not sent over HTTP, so read the redirect locally.
+    const location=response.headers.get('Location');
+    if(location){
+      const redirect=new URL(location,window.location.origin);
+      const fragmentSession=new URLSearchParams(redirect.hash.replace(/^#/,'')).get('session');
+      if(fragmentSession){
+        localStorage.setItem(SESSION_KEY,JSON.stringify({sessionToken:fragmentSession,authenticated:true}));
+      }
+    }else{
+      let data=null;
+      try{data=await response.json()}catch{}
+      if(!response.ok)throw new Error(data?.error||'Discord authorization could not be completed.');
+      if(data?.session){
+        localStorage.setItem(SESSION_KEY,JSON.stringify({sessionToken:data.session,authenticated:true,user:data.user||null}));
+      }
+    }
+
+    if(response.type!=='opaqueredirect' && !response.ok && response.status!==302 && response.status!==303){
+      throw new Error('Discord authorization could not be completed.');
     }
     url.searchParams.delete('code');url.searchParams.delete('state');history.replaceState(null,document.title,url.pathname+url.search);
   }
