@@ -1,6 +1,52 @@
 const DEFAULT_NYXECLIPSE_ORIGIN = 'http://fi15.bot-hosting.net:26116';
 const DEFAULT_DASHBOARD_ORIGIN = 'https://guildnexus.brittanyburwell19.workers.dev';
 
+const PAGE_ROUTES = {
+  '/dashboard/': '/dashboard/index.html',
+  '/about/': '/pages/about.html',
+  '/invite/': '/pages/invite.html',
+  '/servers/': '/pages/servers.html',
+  '/integrations/': '/pages/integrations.html',
+  '/moderation/': '/pages/moderation.html',
+  '/automation/': '/pages/automation.html',
+  '/ai/': '/pages/AIassistant.html',
+  '/terms/': '/pages/Terms%20of%20service.html',
+  '/contact/': '/pages/contact.html',
+  '/settings/': '/pages/settings.html',
+  '/support/': '/pages/support-server.html',
+  '/analytics/': '/pages/analytics.html',
+  '/audit-log/': '/pages/audit-log.html',
+};
+
+const NAV_ROUTES = {
+  '/index.html': '/',
+  '../index.html': '/',
+  'about.html': '/about/',
+  '../about.html': '/about/',
+  'invite.html': '/invite/',
+  '../invite.html': '/invite/',
+  'servers.html': '/servers/',
+  '../servers.html': '/servers/',
+  'integrations.html': '/integrations/',
+  '../integrations.html': '/integrations/',
+  'moderation.html': '/moderation/',
+  '../moderation.html': '/moderation/',
+  'automation.html': '/automation/',
+  '../automation.html': '/automation/',
+  'AIassistant.html': '/ai/',
+  '../AIassistant.html': '/ai/',
+  'Terms%20of%20service.html': '/terms/',
+  '../Terms%20of%20service.html': '/terms/',
+  'Terms of service.html': '/terms/',
+  '../Terms of service.html': '/terms/',
+  'contact.html': '/contact/',
+  '../contact.html': '/contact/',
+  'settings.html': '/settings/',
+  '../settings.html': '/settings/',
+  'support-server.html': '/support/',
+  '../support-server.html': '/support/',
+};
+
 function buildOriginRequest(request, origin) {
   const incoming = new URL(request.url);
   const target = new URL(`${origin}${incoming.pathname}${incoming.search}`);
@@ -27,6 +73,25 @@ function addCorsHeaders(response, dashboardOrigin) {
     statusText: response.statusText,
     headers,
   });
+}
+
+function rewriteNavigation(response) {
+  const contentType = response.headers.get('content-type') || '';
+  if (!contentType.includes('text/html')) {
+    return response;
+  }
+
+  return new HTMLRewriter()
+    .on('nav a[href]', {
+      element(element) {
+        const href = element.getAttribute('href');
+        const replacement = href ? NAV_ROUTES[href] : null;
+        if (replacement) {
+          element.setAttribute('href', replacement);
+        }
+      },
+    })
+    .transform(response);
 }
 
 function isPageRequest(url) {
@@ -75,16 +140,22 @@ export default {
       }
     }
 
-    // Keep the dashboard on the same workers.dev origin. Extensionless paths
-    // fall back to index.html so /invite/, /servers/, etc. remain usable.
     if (env.ASSETS) {
+      // Serve the requested clean route from its real HTML file.
+      const mappedPath = PAGE_ROUTES[url.pathname];
+      if (mappedPath) {
+        const assetUrl = new URL(mappedPath, request.url);
+        const response = await env.ASSETS.fetch(new Request(assetUrl, request));
+        return rewriteNavigation(response);
+      }
+
       const assetResponse = await env.ASSETS.fetch(request);
       if (assetResponse.status !== 404 || !isPageRequest(url)) {
-        return assetResponse;
+        return rewriteNavigation(assetResponse);
       }
 
       const indexUrl = new URL('/index.html', request.url);
-      return env.ASSETS.fetch(new Request(indexUrl, request));
+      return rewriteNavigation(await env.ASSETS.fetch(new Request(indexUrl, request)));
     }
 
     return new Response('GuildNexus Worker is missing its ASSETS binding.', { status: 500 });
