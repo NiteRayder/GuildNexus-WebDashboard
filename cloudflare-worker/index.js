@@ -4,10 +4,7 @@ const DASHBOARD_ORIGIN = 'https://guildnexus.brittanyburwell19.workers.dev';
 function buildOriginRequest(request) {
   const incoming = new URL(request.url);
   const target = new URL(`${NYXECLIPSE_ORIGIN}${incoming.pathname}${incoming.search}`);
-
   const headers = new Headers(request.headers);
-  // The bot API should see the public dashboard origin rather than an internal
-  // Worker hostname. Keep the original Host header out of the upstream request.
   headers.delete('host');
   headers.set('X-Forwarded-Host', incoming.host);
   headers.set('X-Forwarded-Proto', incoming.protocol.replace(':', ''));
@@ -32,50 +29,63 @@ function addCorsHeaders(response) {
   });
 }
 
+function isPageRequest(url) {
+  return !url.pathname.startsWith('/api/') && !url.pathname.includes('.');
+}
+
 export default {
-  async fetch(request) {
+  async fetch(request, env) {
     const url = new URL(request.url);
 
-    // Only proxy the NyxEclypse API. All non-API traffic continues through the
-    // existing dashboard/static Worker behavior.
-    if (!url.pathname.startsWith('/api/')) {
-      return fetch(request);
+    if (url.pathname.startsWith('/api/')) {
+      if (request.method === 'OPTIONS') {
+        return new Response(null, {
+          status: 204,
+          headers: {
+            'Access-Control-Allow-Origin': DASHBOARD_ORIGIN,
+            'Access-Control-Allow-Credentials': 'true',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': request.headers.get('Access-Control-Request-Headers') || 'Content-Type, Authorization',
+            'Access-Control-Max-Age': '86400',
+            'Vary': 'Origin',
+          },
+        });
+      }
+
+      try {
+        // Do not follow upstream redirects. OAuth depends on the browser
+        // receiving Discord's Location header and later receiving the callback
+        // redirect back to GuildNexus.
+        const upstream = await fetch(buildOriginRequest(request));
+        return addCorsHeaders(upstream);
+      } catch (error) {
+        return new Response(JSON.stringify({
+          error: 'NyxEclypse API upstream unavailable',
+          detail: error instanceof Error ? error.message : String(error),
+        }), {
+          status: 502,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': DASHBOARD_ORIGIN,
+            'Access-Control-Allow-Credentials': 'true',
+          },
+        });
+      }
     }
 
-    if (request.method === 'OPTIONS') {
-      return new Response(null, {
-        status: 204,
-        headers: {
-          'Access-Control-Allow-Origin': DASHBOARD_ORIGIN,
-          'Access-Control-Allow-Credentials': 'true',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': request.headers.get('Access-Control-Request-Headers') || 'Content-Type, Authorization',
-          'Access-Control-Max-Age': '86400',
-          'Vary': 'Origin',
-        },
-      });
+    // Keep the existing static dashboard on the same workers.dev origin.
+    // Extensionless paths are treated as dashboard pages and fall back to
+    // index.html when no exact asset exists.
+    if (env.ASSETS) {
+      const assetResponse = await env.ASSETS.fetch(request);
+      if (assetResponse.status !== 404 || !isPageRequest(url)) {
+        return assetResponse;
+      }
+
+      const indexUrl = new URL('/index.html', request.url);
+      return env.ASSETS.fetch(new Request(indexUrl, request));
     }
 
-    try {
-      const upstream = await fetch(buildOriginRequest(request));
-
-      // redirect: manual is important for OAuth. The bot's /api/auth/discord
-      // endpoint redirects to Discord, and the callback redirects back to the
-      // dashboard. Following either redirect inside the Worker would break the
-      // browser's OAuth flow.
-      return addCorsHeaders(upstream);
-    } catch (error) {
-      return new Response(JSON.stringify({
-        error: 'NyxEclypse API upstream unavailable',
-        detail: error instanceof Error ? error.message : String(error),
-      }), {
-        status: 502,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': DASHBOARD_ORIGIN,
-          'Access-Control-Allow-Credentials': 'true',
-        },
-      });
-    }
+    return new Response('GuildNexus Worker is missing its ASSETS binding.', { status: 500 });
   },
 };
