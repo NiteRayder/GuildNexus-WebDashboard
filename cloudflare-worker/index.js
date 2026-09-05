@@ -1,9 +1,9 @@
-const NYXECLIPSE_ORIGIN = 'http://nyxeclipse.apps.bot-hosting.cloud';
-const DASHBOARD_ORIGIN = 'https://guildnexus.brittanyburwell19.workers.dev';
+const DEFAULT_NYXECLIPSE_ORIGIN = 'http://fi15.bot-hosting.net:26116';
+const DEFAULT_DASHBOARD_ORIGIN = 'https://guildnexus.brittanyburwell19.workers.dev';
 
-function buildOriginRequest(request) {
+function buildOriginRequest(request, origin) {
   const incoming = new URL(request.url);
-  const target = new URL(`${NYXECLIPSE_ORIGIN}${incoming.pathname}${incoming.search}`);
+  const target = new URL(`${origin}${incoming.pathname}${incoming.search}`);
   const headers = new Headers(request.headers);
   headers.delete('host');
   headers.set('X-Forwarded-Host', incoming.host);
@@ -17,9 +17,9 @@ function buildOriginRequest(request) {
   });
 }
 
-function addCorsHeaders(response) {
+function addCorsHeaders(response, dashboardOrigin) {
   const headers = new Headers(response.headers);
-  headers.set('Access-Control-Allow-Origin', DASHBOARD_ORIGIN);
+  headers.set('Access-Control-Allow-Origin', dashboardOrigin);
   headers.set('Access-Control-Allow-Credentials', 'true');
   headers.set('Vary', 'Origin');
   return new Response(response.body, {
@@ -36,13 +36,15 @@ function isPageRequest(url) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    const upstreamOrigin = env.NYXECLIPSE_ORIGIN || DEFAULT_NYXECLIPSE_ORIGIN;
+    const dashboardOrigin = env.DASHBOARD_ORIGIN || DEFAULT_DASHBOARD_ORIGIN;
 
     if (url.pathname.startsWith('/api/')) {
       if (request.method === 'OPTIONS') {
         return new Response(null, {
           status: 204,
           headers: {
-            'Access-Control-Allow-Origin': DASHBOARD_ORIGIN,
+            'Access-Control-Allow-Origin': dashboardOrigin,
             'Access-Control-Allow-Credentials': 'true',
             'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
             'Access-Control-Allow-Headers': request.headers.get('Access-Control-Request-Headers') || 'Content-Type, Authorization',
@@ -56,8 +58,8 @@ export default {
         // Do not follow upstream redirects. OAuth depends on the browser
         // receiving Discord's Location header and later receiving the callback
         // redirect back to GuildNexus.
-        const upstream = await fetch(buildOriginRequest(request));
-        return addCorsHeaders(upstream);
+        const upstream = await fetch(buildOriginRequest(request, upstreamOrigin));
+        return addCorsHeaders(upstream, dashboardOrigin);
       } catch (error) {
         return new Response(JSON.stringify({
           error: 'NyxEclypse API upstream unavailable',
@@ -66,16 +68,15 @@ export default {
           status: 502,
           headers: {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': DASHBOARD_ORIGIN,
+            'Access-Control-Allow-Origin': dashboardOrigin,
             'Access-Control-Allow-Credentials': 'true',
           },
         });
       }
     }
 
-    // Keep the existing static dashboard on the same workers.dev origin.
-    // Extensionless paths are treated as dashboard pages and fall back to
-    // index.html when no exact asset exists.
+    // Keep the dashboard on the same workers.dev origin. Extensionless paths
+    // fall back to index.html so /invite/, /servers/, etc. remain usable.
     if (env.ASSETS) {
       const assetResponse = await env.ASSETS.fetch(request);
       if (assetResponse.status !== 404 || !isPageRequest(url)) {
