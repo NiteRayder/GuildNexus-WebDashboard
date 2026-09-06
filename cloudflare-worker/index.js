@@ -5,6 +5,7 @@ const DEFAULT_DASHBOARD_ORIGIN = 'https://guildnexus.brittanyburwell19.workers.d
 // consume the repository's legacy _redirects file. Dashboard module routes all
 // resolve to the same authenticated shell with the requested view selected.
 const PAGE_ROUTES = {
+  '/dashboard': '/dashboard/index.html',
   '/dashboard/': '/dashboard/index.html',
   '/servers/': '/dashboard/index.html?view=overview',
   '/moderation/': '/dashboard/index.html?view=moderation',
@@ -89,21 +90,15 @@ function addCorsHeaders(response, dashboardOrigin) {
 
 function rewriteNavigation(response) {
   const contentType = response.headers.get('content-type') || '';
-  if (!contentType.includes('text/html')) {
-    return response;
-  }
+  if (!contentType.includes('text/html')) return response;
 
-  return new HTMLRewriter()
-    .on('nav a[href]', {
-      element(element) {
-        const href = element.getAttribute('href');
-        const replacement = href ? NAV_ROUTES[href] : null;
-        if (replacement) {
-          element.setAttribute('href', replacement);
-        }
-      },
-    })
-    .transform(response);
+  return new HTMLRewriter().on('nav a[href]', {
+    element(element) {
+      const href = element.getAttribute('href');
+      const replacement = href ? NAV_ROUTES[href] : null;
+      if (replacement) element.setAttribute('href', replacement);
+    },
+  }).transform(response);
 }
 
 function isPageRequest(url) {
@@ -132,9 +127,6 @@ export default {
       }
 
       try {
-        // Do not follow upstream redirects. OAuth depends on the browser
-        // receiving Discord's Location header and later receiving the callback
-        // redirect back to GuildNexus.
         const upstream = await fetch(buildOriginRequest(request, upstreamOrigin));
         return addCorsHeaders(upstream, dashboardOrigin);
       } catch (error) {
@@ -153,9 +145,6 @@ export default {
     }
 
     if (env.ASSETS) {
-      // Serve the requested clean route from its real HTML file. Query strings
-      // on dashboard shell mappings are preserved so the requested module can
-      // be rendered directly.
       const mappedPath = PAGE_ROUTES[url.pathname];
       if (mappedPath) {
         const assetUrl = new URL(mappedPath, request.url);
@@ -164,9 +153,7 @@ export default {
       }
 
       const assetResponse = await env.ASSETS.fetch(request);
-      if (assetResponse.status !== 404 || !isPageRequest(url)) {
-        return rewriteNavigation(assetResponse);
-      }
+      if (assetResponse.status !== 404 || !isPageRequest(url)) return rewriteNavigation(assetResponse);
 
       const indexUrl = new URL('/index.html', request.url);
       return rewriteNavigation(await env.ASSETS.fetch(new Request(indexUrl, request)));
