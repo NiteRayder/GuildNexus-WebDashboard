@@ -4,7 +4,7 @@ const DASHBOARD_REDIRECT_URI='https://guildnexus.brittanyburwell19.workers.dev/a
 const SESSION_KEY='guildnexus_discord_session';
 
 // Authentication is initiated through the public GuildNexus HTTPS endpoint.
-// The Cloudflare Worker proxies /api/* to NyxEclypse, while Discord redirects
+// The Cloudflare Worker proxies /api/* to NyxEclipse, while Discord redirects
 // the authorization code to the dedicated server-side OAuth callback.
 export function loginWithDiscord(){ window.location.assign(`${NYXECLIPSE_API}/api/auth/discord`); }
 export function getStoredSession(){try{return JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch{localStorage.removeItem(SESSION_KEY);return null}}
@@ -45,7 +45,7 @@ export async function fetchManageableGuilds(){const s=getStoredSession();if(!s?.
 export async function logoutFromDiscord(){const s=getStoredSession();await fetch(`${NYXECLIPSE_API}/api/auth/logout`,{method:'POST',credentials:'include',headers:s?.sessionToken?{Authorization:`Bearer ${s.sessionToken}`}:{}}).catch(()=>{});clearSession()}
 
 // Installation is deliberately separate from user authentication.
-// Discord's normal bot install flow is callback-less and does not need
-// response_type or redirect_uri.
-export function getBotInviteUrl(){const p=new URLSearchParams({client_id:DISCORD_CLIENT_ID,permissions:'8',scope:'bot'});return `https://discord.com/oauth2/authorize?${p.toString()}`}
+// Discord's bot install flow includes the application command scope so slash
+// commands are explicitly authorized alongside the bot installation.
+export function getBotInviteUrl(){const p=new URLSearchParams({client_id:DISCORD_CLIENT_ID,permissions:'8',scope:'bot applications.commands'});return `https://discord.com/oauth2/authorize?${p.toString()}`}
 export{NYXECLIPSE_API};
