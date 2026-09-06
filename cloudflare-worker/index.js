@@ -1,21 +1,33 @@
 const DEFAULT_NYXECLIPSE_ORIGIN = 'http://fi15.bot-hosting.net:26116';
 const DEFAULT_DASHBOARD_ORIGIN = 'https://guildnexus.brittanyburwell19.workers.dev';
 
+// Clean public routes are resolved here because the Cloudflare Worker does not
+// consume the repository's legacy _redirects file. Dashboard module routes all
+// resolve to the same authenticated shell with the requested view selected.
 const PAGE_ROUTES = {
   '/dashboard/': '/dashboard/index.html',
+  '/servers/': '/dashboard/index.html?view=overview',
+  '/moderation/': '/dashboard/index.html?view=moderation',
+  '/security/': '/dashboard/index.html?view=security',
+  '/members/': '/dashboard/index.html?view=members',
+  '/audit/': '/dashboard/index.html?view=audit',
+  '/welcome/': '/dashboard/index.html?view=welcome',
+  '/tickets/': '/dashboard/index.html?view=tickets',
+  '/leveling/': '/dashboard/index.html?view=leveling',
+  '/reaction-roles/': '/dashboard/index.html?view=reaction-roles',
+  '/giveaways/': '/dashboard/index.html?view=giveaways',
+  '/analytics/': '/dashboard/index.html?view=analytics',
+  '/embeds/': '/dashboard/index.html?view=embeds',
+  '/automation/': '/dashboard/index.html?view=automation',
+  '/ai/': '/dashboard/index.html?view=ai',
+  '/integrations/': '/dashboard/index.html?view=integrations',
+  '/server-config/': '/dashboard/index.html?view=server-config',
+  '/settings/': '/dashboard/index.html?view=settings',
   '/about/': '/pages/about.html',
   '/invite/': '/pages/invite.html',
-  '/servers/': '/pages/servers.html',
-  '/integrations/': '/pages/integrations.html',
-  '/moderation/': '/pages/moderation.html',
-  '/automation/': '/pages/automation.html',
-  '/ai/': '/pages/AIassistant.html',
   '/terms/': '/pages/Terms%20of%20service.html',
   '/contact/': '/pages/contact.html',
-  '/settings/': '/pages/settings.html',
   '/support/': '/pages/support-server.html',
-  '/analytics/': '/pages/analytics.html',
-  '/audit-log/': '/pages/audit-log.html',
 };
 
 const NAV_ROUTES = {
@@ -127,7 +139,7 @@ export default {
         return addCorsHeaders(upstream, dashboardOrigin);
       } catch (error) {
         return new Response(JSON.stringify({
-          error: 'NyxEclypse API upstream unavailable',
+          error: 'NyxEclipse API upstream unavailable',
           detail: error instanceof Error ? error.message : String(error),
         }), {
           status: 502,
@@ -141,7 +153,9 @@ export default {
     }
 
     if (env.ASSETS) {
-      // Serve the requested clean route from its real HTML file.
+      // Serve the requested clean route from its real HTML file. Query strings
+      // on dashboard shell mappings are preserved so the requested module can
+      // be rendered directly.
       const mappedPath = PAGE_ROUTES[url.pathname];
       if (mappedPath) {
         const assetUrl = new URL(mappedPath, request.url);
